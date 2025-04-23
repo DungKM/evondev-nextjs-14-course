@@ -1,3 +1,4 @@
+import { roboto } from "@/components/font";
 import type { Config } from "tailwindcss";
 
 const config: Config = {
@@ -8,11 +9,13 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
-      },
+      fontFamily: {
+        sans: ["var(--font-manrope)", "sans-serif"],
+        serif: ["var(--font-manrope)", "serif"],
+        mono: ["var(--font-manrope)", "monospace"],
+        roboto: ["var(--font-roboto)", "sans-serif"],
     },
+  },
   },
   plugins: [],
 };
