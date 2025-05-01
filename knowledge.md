@@ -18,4 +18,8 @@
 - variable: tên biến để sử dụng trong CSS, ví dụ: variable: "--font-manrope"
 - Sử dụng trong css: body{font-family: var(--font-manrope)}
 
+# Typescript
+- `CompenentProps<"svg">`: Lấy ra các props của svg;
+# Kiến thức 
+- Nếu mà component có tính lặp đi lặp lại thì nên lưu vào 1 mang rồi sau đó loop ra thì sẽ tối ưu hơn
 # Next/Link
