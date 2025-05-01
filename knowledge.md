@@ -17,3 +17,5 @@
 - subsets: kiểu chữ, thông thường là latin
 - variable: tên biến để sử dụng trong CSS, ví dụ: variable: "--font-manrope"
 - Sử dụng trong css: body{font-family: var(--font-manrope)}
+
+# Next/Link

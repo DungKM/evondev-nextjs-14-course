@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import { manrope, roboto, poppins } from "@/components/font";
+import { manrope } from "@/utils";
+import Sidebar from "@/components/layout/Sidebar";
 
 
 export const metadata: Metadata = {
@@ -16,9 +17,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={poppins.className}
+        className={manrope.className}
       >
-        {children}
+        <div className="wrapper grid grid-cols-[300px,minmax(0,1fr)] h-screen">
+          <Sidebar />
+          {/* Main content */}
+          <main>{children}</main>
+        </div>
       </body>
     </html>
   );
