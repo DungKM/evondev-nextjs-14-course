@@ -23,3 +23,21 @@
 # Kiến thức 
 - Nếu mà component có tính lặp đi lặp lại thì nên lưu vào 1 mang rồi sau đó loop ra thì sẽ tối ưu hơn
 # Next/Link
+- Link
+- href: đường dẫn, có thể truyền vào là chuỗi hoặc object
+```js
+ <Link
+    // href={{
+    //     pathname: url,
+    //     query: { slug: "bai-1-tong-quan" },
+    // }}
+    // href={`${url}?page=1`}
+    href={url}
+    className="p-3 rounded-md flex items-center gap-3 hover:text-primary hover:bg-primary hover:bg-opacity-10 transition-all">
+    
+ </Link>
+```
+- replace: chỉ thay thế đường dẫn và không lưu lại trong lịch sử ko thể back lại
+- scroll: mặc định là `true` nghĩa là khi nhấn vào link thì sẽ scroll lên trên cùng, nếu không muốn scroll thì thiết lập `scroll={false}`
+- prefetch: 
+

@@ -1,9 +1,11 @@
 import { menuItems } from "@/constants";
+import Link from "next/link";
 
 const Sidebar = () => {
     return (<aside className="p-5 border-r border-gray-200">
         <a href="/" className="font-bold text-3xl inline-block mb-5">
-            Ucademy
+            <span className="text-primary">U</span>
+            cademy
         </a>
         <ul className="flex flex-col gap-2">
             {menuItems.map((item, index) => (
@@ -16,7 +18,14 @@ const Sidebar = () => {
 function MenuItem({ url = "/", title = "", icon }: { url?: string, title?: string, icon?: React.ReactNode }) {
     return (
         <li>
-            <a href={url} className="p-3 rounded-md flex items-center gap-3 hover:text-primary hover:bg-primary hover:bg-opacity-10 transition-all">{icon} {title}</a>
+            <Link
+                // href={{
+                //     pathname: url,
+                //     query: { slug: "bai-1-tong-quan" },
+                // }}
+                // href={`${url}?page=1`}
+                href={url}
+                className="p-3 rounded-md flex items-center gap-3 hover:text-primary hover:bg-primary hover:bg-opacity-10 transition-all">{icon} {title}</Link>
         </li>
     )
 }
