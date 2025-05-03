@@ -39,5 +39,9 @@
 ```
 - replace: chỉ thay thế đường dẫn và không lưu lại trong lịch sử ko thể back lại
 - scroll: mặc định là `true` nghĩa là khi nhấn vào link thì sẽ scroll lên trên cùng, nếu không muốn scroll thì thiết lập `scroll={false}`
-- prefetch: 
+- prefetch: chạy khi thẻ link xuất hiện trên viewport mà chúng ta thấy hoặc khi chúng ta scroll
+- hook `usePathname` trả ra pathname giúp chúng ta xử lý trong những trường hợp mà chúng ta muốn ví như active link
+## Error: 
+  × You're importing a component that needs `usePathname`. It only works in a Client Component but none of its parents are marked with "use client", so they're Server Components by default.
+  │ Learn more: https://nextjs.org/docs/getting-started/react-essentials
 

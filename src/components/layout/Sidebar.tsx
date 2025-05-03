@@ -1,5 +1,6 @@
 import { menuItems } from "@/constants";
-import Link from "next/link";
+import ActiveLink from "../common/ActiveLink";
+import { TMenuItem } from "../types";
 
 const Sidebar = () => {
     return (<aside className="p-5 border-r border-gray-200">
@@ -15,17 +16,12 @@ const Sidebar = () => {
     </aside>);
 }
 
-function MenuItem({ url = "/", title = "", icon }: { url?: string, title?: string, icon?: React.ReactNode }) {
+function MenuItem({ url = "/", title = "", icon }: TMenuItem) {
     return (
         <li>
-            <Link
-                // href={{
-                //     pathname: url,
-                //     query: { slug: "bai-1-tong-quan" },
-                // }}
-                // href={`${url}?page=1`}
-                href={url}
-                className="p-3 rounded-md flex items-center gap-3 hover:text-primary hover:bg-primary hover:bg-opacity-10 transition-all">{icon} {title}</Link>
+            <ActiveLink url={url}>
+             {icon} {title}
+            </ActiveLink>
         </li>
     )
 }
