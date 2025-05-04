@@ -41,7 +41,37 @@
 - scroll: mặc định là `true` nghĩa là khi nhấn vào link thì sẽ scroll lên trên cùng, nếu không muốn scroll thì thiết lập `scroll={false}`
 - prefetch: chạy khi thẻ link xuất hiện trên viewport mà chúng ta thấy hoặc khi chúng ta scroll
 - hook `usePathname` trả ra pathname giúp chúng ta xử lý trong những trường hợp mà chúng ta muốn ví như active link
-## Error: 
+# Error: 
   × You're importing a component that needs `usePathname`. It only works in a Client Component but none of its parents are marked with "use client", so they're Server Components by default.
   │ Learn more: https://nextjs.org/docs/getting-started/react-essentials
 
+# Routing
+- Basic: Thư mục có file page.tsx -> sign-in: page.tsx . Sẽ tạo ra đường dẫn của webapp là /sign-in
+- Lưu ý trong thư mục phải có file `page.tsx`
+- Segment dynamic: [name] -> [course]: mục đích là để lấy các params ra để xử lý 1 công việc gì đó ví dụ lấy bài học từ khóa học là để gop các routing liên quan
+- [course]/lesson/page.tsx
+
+```ts
+[course]/lesson/page.tsx
+vscode-master/lesson?slug=bai-1-tong
+```
+
+- Nested routes:  `/hello/world`
+```js
+ /hello/world/page.tsx
+```
+
+- Group: không tạo ra routing. ví dụ `(dashboard)` sẽ không tạo ra /dashboard. Nếu truy cập vào thì sẽ hiển thị not-found. Mục đích sử dụng là để gom các routing liên quan vào chung
+```js
+ (dashboard);
+```
+- Ví dụ có đường dẫn là shop, shop/a, shop/b, shop/b/c thì Catch-all segments sẽ chấp nhận còn nếu /shop thì sẽ not-found
+- Ví dụ có đường dẫn là shop, shop/a, shop/b, shop/b/c thì Optional Catch-all segments sẽ chấp nhận tất cả bao gồm /shop
+- Catch-all Segments: sign-in/[...sign-in]
+- Optional catch-all Segment: sign-in/[[...sign-in]]
+
+- Lưu ý : khi để 2 thư mục dynmamic cùng cáp thì sẽ báo lỗi ví dụ [item] cùng cấp với [folder]
+# Params
+
+- params: thường là dynamic routes: [item]/lesson
+- searchParams: thường là những query ở trên url ví dụ lesson?slug=html-css. thì slug chính là `searchParams`
