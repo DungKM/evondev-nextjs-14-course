@@ -75,3 +75,26 @@ vscode-master/lesson?slug=bai-1-tong
 
 - params: thường là dynamic routes: [item]/lesson
 - searchParams: thường là những query ở trên url ví dụ lesson?slug=html-css. thì slug chính là `searchParams`
+
+
+# Next/image
+- Image yêu cầu có 3 thuộc tính bắt buộc là alt, width, heigth
+- Nếu sử dụng thuộc tính fill thì ko cần width và heigth vẫn hoạt động, Tuy nhiên thẻ img sẽ trở thành absolute, cho nên có 1 phần chứa nó sử dụng position:
+relative hoặc absolute tùy vào mục đích code.
+
+- Khi sử dụng `src` từ bên ngoài thì phải thiết lập trong next.config.mjs ví dụ
+
+```
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+    images: {
+        remotePatterns: [
+          {
+            protocol: 'https',
+            hostname: 'images.unsplash.com',
+          },
+        ],
+      },
+};
+
+export default nextConfig;

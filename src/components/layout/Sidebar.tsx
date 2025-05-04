@@ -3,7 +3,7 @@ import ActiveLink from "../common/ActiveLink";
 import { TMenuItem } from "../types";
 
 const Sidebar = () => {
-    return (<aside className="p-5 border-r border-gray-200">
+    return (<aside className="p-5 border-r border-gray-200 bg-white">
         <a href="/" className="font-bold text-3xl inline-block mb-5">
             <span className="text-primary">U</span>
             cademy
