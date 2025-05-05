@@ -1,9 +1,10 @@
 import { menuItems } from "@/constants";
-import ActiveLink from "../common/ActiveLink";
 import { TMenuItem } from "../types";
+import { ActiveLink } from "../common";
+import { UserButton } from "@clerk/nextjs";
 
 const Sidebar = () => {
-    return (<aside className="p-5 border-r border-gray-200 bg-white">
+    return (<div className="p-5 border-r border-gray-200 bg-white flex flex-col">
         <a href="/" className="font-bold text-3xl inline-block mb-5">
             <span className="text-primary">U</span>
             cademy
@@ -13,14 +14,17 @@ const Sidebar = () => {
                 <MenuItem key={index} url={item.url} title={item.title} icon={item.icon}></MenuItem>
             ))}
         </ul>
-    </aside>);
+        <div className="mt-auto flex items-center justify-end">
+            <UserButton />
+        </div>
+    </div>);
 }
 
 function MenuItem({ url = "/", title = "", icon }: TMenuItem) {
     return (
         <li>
             <ActiveLink url={url}>
-             {icon} {title}
+                {icon} {title}
             </ActiveLink>
         </li>
     )
