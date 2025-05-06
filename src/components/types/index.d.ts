@@ -1,5 +1,5 @@
 type TActiveLinkProps = {
-    url?: string;
+    url: string;
     children?: React.ReactNode;
 }
 type TMenuItem = {
