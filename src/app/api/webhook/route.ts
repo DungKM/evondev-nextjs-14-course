@@ -1,7 +1,6 @@
-import { WebhookEvent } from "@clerk/nextjs/server";
-import { CloudLightning } from "lucide-react";
-import { Webhook } from "c";
 
+import { Webhook } from "svix";
+import { WebhookEvent } from "@clerk/nextjs/server";
 export async function POST(req: Request) {
   const svix_id = req.headers.get("svix-id") ?? "";
   const svix_timestamp = req.headers.get("svix-timestamp") ?? "";
