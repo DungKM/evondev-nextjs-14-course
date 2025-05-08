@@ -1,6 +1,8 @@
 
 import { Webhook } from "svix";
 import { WebhookEvent } from "@clerk/nextjs/server";
+import createUser from "@/lib/actions/user.actions";
+import { NextResponse } from "next/server";
 export async function POST(req: Request) {
   const svix_id = req.headers.get("svix-id") ?? "";
   const svix_timestamp = req.headers.get("svix-timestamp") ?? "";
@@ -22,12 +24,24 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature,
     }) as WebhookEvent;
   } catch (err) {
+    console.error("Webhook verification failed", err);
     return new Response("Bad Request", { status: 400 });
   }
 
   const eventType = msg.type;
   if(eventType === "user.created") {
-     console.log(msg.data);
+    const { id, username, email_addresses, image_url } = msg.data;
+    const user = await createUser({
+      username: username!,
+      name: username!,
+      clerkId: id,
+      email: email_addresses[0].email_address,
+      avatar: image_url,
+    });
+    return NextResponse.json({
+      message: "OK",
+      data: user,
+    });
   }
 
   // Rest
