@@ -6,6 +6,13 @@ import Course from "@/app/database/course.model";
 export async function createCourse(params: TCreateCourseParams) {
     try {
         connectToDatabase();
+        const existCourse = await Course.findOne({ slug: params.slug });
+        if (existCourse) {
+            return {
+                succcess: false,
+                message: "Đường dẫn đã tồn tại!",
+            }
+        }
         const course = await Course.create(params);
         return {
             success: true,

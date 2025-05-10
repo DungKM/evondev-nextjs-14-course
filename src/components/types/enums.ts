@@ -8,7 +8,7 @@ enum EUserRole {
     ADMIN = "ADMIN",
     EXPERT = "EXPERT",
 }
-enum ECouseStatus {
+enum ECourseStatus {
     APPROVED = "APPROVED",
     PENDING = "PENDING",
     REJECTED = "REJECTED",
@@ -23,4 +23,4 @@ enum ELessonType {
     TEXT = "TEXT",
 }
 
-export {EUserStatus, EUserRole, ECouseStatus, ECourseLevel, ELessonType};
+export {EUserStatus, EUserRole, ECourseStatus, ECourseLevel, ELessonType};

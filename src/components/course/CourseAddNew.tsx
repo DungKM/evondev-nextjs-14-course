@@ -19,12 +19,13 @@ import { createCourse } from "@/lib/actions/course.action"
 import slugify from "slugify"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
+import { IUser } from "@/app/database/user.model"
 const formSchema = z.object({
   title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự"),
   slug: z.string().optional(),
 });
 
-export function CourseAddNew() {
+export function CourseAddNew({user}: {user: IUser}) {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
@@ -42,8 +43,13 @@ export function CourseAddNew() {
         slug: values.slug || slugify(values.title, {
           lower: true, locale: "vi"
         }),
+        author: user._id,
       }
       const res = await createCourse(data);
+      if (!res?.success) {
+        toast.error(res.message)
+        return;
+      }
       if (res?.success) {
         toast.success("Tạo khóa học thành công")
       }

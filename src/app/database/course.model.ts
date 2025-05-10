@@ -1,4 +1,4 @@
-import { ECourseLevel, ECouseStatus } from "@/components/types/enums";
+import { ECourseLevel, ECourseStatus } from "@/components/types/enums";
 import { Document, Schema, model, models } from "mongoose";
 
 export interface ICourse extends Document {
@@ -10,7 +10,7 @@ export interface ICourse extends Document {
     price: number;
     sale_price: number;
     slug: string;
-    status: ECouseStatus;
+    status: ECourseStatus;
     created_at: Date;
     author: Schema.Types.ObjectId;
     level: ECourseLevel;
@@ -58,8 +58,8 @@ const courseSchema = new Schema<ICourse>({
     },
     status: {
         type: String,
-        enum: Object.values(ECouseStatus),
-        default: ECouseStatus.PENDING,
+        enum: Object.values(ECourseStatus),
+        default: ECourseStatus.PENDING,
     },
     created_at: {
         type: Date,
