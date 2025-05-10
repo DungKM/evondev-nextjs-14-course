@@ -15,13 +15,17 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
+import { createCourse } from "@/lib/actions/course.action"
 import slugify from "slugify"
+import { toast } from "react-toastify"
+import { useRouter } from "next/navigation"
 const formSchema = z.object({
   title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự"),
   slug: z.string().optional(),
 });
 
 export function CourseAddNew() {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -30,7 +34,7 @@ export function CourseAddNew() {
       slug: "",
     },
   })
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true)
     try {
       const data = {
@@ -39,13 +43,18 @@ export function CourseAddNew() {
           lower: true, locale: "vi"
         }),
       }
-      console.log(data)
+      const res = await createCourse(data);
+      if (res?.success) {
+        toast.success("Tạo khóa học thành công")
+      }
+      if(res?.data){
+        router.push(`/manage/course/update?slug=${res.data.slug}`);
+      }
     } catch (error) {
 
     } finally {
-      setTimeout(() => {
-        setIsSubmitting(false)
-      }, 5000)
+      setIsSubmitting(false);
+      form.reset();
     }
   }
   return (
