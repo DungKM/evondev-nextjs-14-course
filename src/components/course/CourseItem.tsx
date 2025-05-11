@@ -17,7 +17,6 @@ const CourseItem = ({data}: {data: ICourse} ) => {
             icon: (classname?: string) => <IconClock className={classname}></IconClock>,
         }
     ];
-    console.log(data);
     return (
         <div className="bg-white dark:bg-grayDarker border p-4 border-gray-200 rounded-2xl">
             <Link href={`/course/${data.slug}`} className="block h-[180px] relative">
