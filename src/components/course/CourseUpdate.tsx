@@ -15,12 +15,12 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
-import slugify from "slugify"
-import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
 import { Textarea } from "../ui/textarea"
 import { ECourseLevel, ECourseStatus } from "../types/enums"
-import { info } from "console"
+import { updateCourse } from "@/lib/actions/course.action"
+import { ICourse } from "@/app/database/course.model"
+import { toast } from "react-toastify"
 const formSchema = z.object({
     title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự"),
     slug: z.string().optional(),
@@ -41,29 +41,46 @@ const formSchema = z.object({
     })
 });
 
-const CourseUpdate = () => {
+const CourseUpdate = ({ data }: { data: ICourse }) => {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false)
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
-            title: "",
-            slug: "",
-            price: 0,
-            sale_price: 0,
-            intro_url: "",
-            desc: "",
-            image: "",
-            status: ECourseStatus.APPROVED,
-            level: ECourseLevel.BEGINNER,
+            title: data.title,
+            slug: data.slug,
+            price: data.price,
+            sale_price: data.sale_price,
+            intro_url: data.intro_url,
+            desc: data.desc,
+            image: data.image,
+            status: data.status,
+            level: data.level,
         },
     })
     async function onSubmit(values: z.infer<typeof formSchema>) {
+        console.log(values);
         setIsSubmitting(true)
         try {
-
+            const res= await updateCourse({
+                slug: data.slug,
+                updateData: {
+                    title: values.title,
+                    slug: values.slug,
+                    price: values.price,
+                    sale_price: values.sale_price,
+                    intro_url: values.intro_url,
+                    desc: values.desc,
+                }
+            });
+            if(values.slug){
+                router.replace(`/manage/course/update?slug=${values.slug}`);
+            }
+            if (res?.success) {
+                toast.success(res.message);
+            }
         } catch (error) {
-
+            console.log(error);
         } finally {
             setIsSubmitting(false);
         }
@@ -105,7 +122,9 @@ const CourseUpdate = () => {
                             <FormItem>
                                 <FormLabel>Giá khuyến mãi</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="599.000" {...field} />
+                                    <Input type="numeber" placeholder="599.000" {...field}
+                                        onChange={(e) => field.onChange(Number(e.target.value))}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -118,7 +137,9 @@ const CourseUpdate = () => {
                             <FormItem>
                                 <FormLabel>Giá gốc</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="999.000" {...field} />
+                                    <Input type="number" placeholder="999.000" {...field}
+                                        onChange={(e) => field.onChange(Number(e.target.value))}
+                                    />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
