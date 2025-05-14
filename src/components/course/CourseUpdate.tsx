@@ -21,6 +21,8 @@ import { ECourseLevel, ECourseStatus } from "../types/enums"
 import { updateCourse } from "@/lib/actions/course.action"
 import { ICourse } from "@/app/database/course.model"
 import { toast } from "react-toastify"
+import { useImmer } from "use-immer"
+import { IconAdd } from "../icons"
 const formSchema = z.object({
     title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự"),
     slug: z.string().optional(),
@@ -44,6 +46,12 @@ const formSchema = z.object({
 const CourseUpdate = ({ data }: { data: ICourse }) => {
     const router = useRouter();
     const [isSubmitting, setIsSubmitting] = useState(false)
+    const [courseInfo, setCourseInfo] = useImmer({
+        requirements: data.info.requirements,
+        benefits: data.info.benefits,
+        qa: data.info.qa
+    });
+
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -59,10 +67,10 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
         },
     })
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values);
+        console.log(courseInfo);
         setIsSubmitting(true)
         try {
-            const res= await updateCourse({
+            const res = await updateCourse({
                 slug: data.slug,
                 updateData: {
                     title: values.title,
@@ -71,9 +79,14 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                     sale_price: values.sale_price,
                     intro_url: values.intro_url,
                     desc: values.desc,
+                    info: {
+                        requirements: courseInfo.requirements,
+                        benefits: courseInfo.benefits,
+                        qa: courseInfo.qa
+                    }
                 }
             });
-            if(values.slug){
+            if (values.slug) {
                 router.replace(`/manage/course/update?slug=${values.slug}`);
             }
             if (res?.success) {
@@ -215,8 +228,25 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                         name="info.requirements"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Yêu cầu</FormLabel>
-                                <FormControl></FormControl>
+                                <FormLabel className="flex items-center justify-between gap-5">
+                                    <span>Yêu cầu</span>
+                                    <button type="button" className="text-primary" onClick={() => {
+                                        setCourseInfo((draft) => {
+                                            draft.requirements.push("");
+                                        })
+                                    }}><IconAdd className="size-5" /></button>
+                                </FormLabel>
+                                <FormControl>
+                                    <>
+                                        {courseInfo.requirements.map((r, index) => (
+                                            <Input key={index} placeholder={`Yêu cầu số ${index + 1}`}  value={r} onChange={(e) => {
+                                                setCourseInfo((draft) => {
+                                                    draft.requirements[index] = e.target.value;
+                                                })
+                                            }} />
+                                        ))}
+                                    </>
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -225,9 +255,26 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                         control={form.control}
                         name="info.benefits"
                         render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Lợi ích</FormLabel>
-                                <FormControl></FormControl>
+                           <FormItem>
+                                <FormLabel className="flex items-center justify-between gap-5">
+                                    <span>Lợi ích</span>
+                                    <button type="button" className="text-primary" onClick={() => {
+                                        setCourseInfo((draft) => {
+                                            draft.benefits.push("");
+                                        })
+                                    }}><IconAdd className="size-5" /></button>
+                                </FormLabel>
+                                <FormControl>
+                                    <>
+                                        {courseInfo.benefits.map((r, index) => (
+                                            <Input key={index} placeholder={`Lợi ích số ${index + 1}`} value={r} onChange={(e) => {
+                                                setCourseInfo((draft) => {
+                                                    draft.benefits[index] = e.target.value;
+                                                })
+                                            }} />
+                                        ))}
+                                    </>
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
@@ -236,9 +283,36 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                         control={form.control}
                         name="info.qa"
                         render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Question/Answer</FormLabel>
-                                <FormControl></FormControl>
+                             <FormItem>
+                                <FormLabel className="flex items-center justify-between gap-5">
+                                    <span>Q&A</span>
+                                    <button type="button" className="text-primary" onClick={() => {
+                                        setCourseInfo((draft) => {
+                                            draft.qa.push({
+                                                question: "",
+                                                answer: ""
+                                            });
+                                        })
+                                    }}><IconAdd className="size-5" /></button>
+                                </FormLabel>
+                                <FormControl>
+                                    <>
+                                        {courseInfo.qa.map((item, index) => (
+                                            <div className="grid grid-cols-2 gap-5">
+                                                <Input key={index} placeholder={`Câu hỏi số ${index + 1}`} value={item.question} onChange={(e) => {
+                                                    setCourseInfo((draft) => {
+                                                        draft.qa[index].question = e.target.value;
+                                                    })
+                                                }} />
+                                                <Input key={index} placeholder={`Câu trả lời số ${index + 1}`} value={item.answer} onChange={(e) => {
+                                                    setCourseInfo((draft) => {
+                                                        draft.qa[index].answer = e.target.value;
+                                                    })
+                                                }} />
+                                            </div>
+                                        ))}
+                                    </>
+                                </FormControl>
                                 <FormMessage />
                             </FormItem>
                         )}
