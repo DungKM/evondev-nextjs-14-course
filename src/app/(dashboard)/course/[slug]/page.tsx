@@ -1,5 +1,8 @@
+import PageNotPound from '@/app/not-found';
 import { IconPlay, IconStudy, IconUsers } from '@/components/icons';
+import { ECourseStatus } from '@/components/types/enums';
 import { Button } from '@/components/ui/button'
+import { CourseLevelTitle } from '@/constants';
 import { getCourseBySlug } from '@/lib/actions/course.action';
 import Image from 'next/image'
 import React from 'react'
@@ -7,16 +10,16 @@ import React from 'react'
 const page = async ({ params }: { params: { slug: string } }) => {
   const data = await getCourseBySlug({ slug: params.slug });
   if (!data) return null;
+  if(data.status !== ECourseStatus.APPROVED) return <PageNotPound />
   const videoId = data.intro_url?.split("v=")[1];
-  console.log(videoId)
   return (
     <div className='grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen'>
       <div>
         <div className='relative aspect-[16/9] mb-5'>
-          {data.intro_url ? <>
+          {!data.intro_url ? <>
             <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videoId}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className='w-full h-full object-fill'></iframe>
           </> : (
-            <Image src="https://images.unsplash.com/photo-1746307415334-8914cae06a28?q=80&w=1984&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt='' fill
+            <Image src={data.image} alt='' fill
               className='w-ful h-full object-cover rounded-lg' />
           )}
         </div>
@@ -28,7 +31,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           <div className='grid grid-cols-4 gap-5'>
             <BoxInfo title="Bài học">100</BoxInfo>
             <BoxInfo title="Lượt xem">{data.views}</BoxInfo>
-            <BoxInfo title="Trình độ">100</BoxInfo>
+            <BoxInfo title="Trình độ">{CourseLevelTitle[data.level]}</BoxInfo>
             <BoxInfo title="Thời lượng">100</BoxInfo>
           </div>
         </BoxSection>

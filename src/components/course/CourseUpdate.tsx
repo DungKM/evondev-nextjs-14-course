@@ -12,7 +12,14 @@ import {
     FormItem,
     FormLabel,
     FormMessage,
-} from "@/components/ui/form"
+} from "@/components/ui/form";
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select";
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
 import { useRouter } from "next/navigation"
@@ -23,6 +30,9 @@ import { ICourse } from "@/app/database/course.model"
 import { toast } from "react-toastify"
 import { useImmer } from "use-immer"
 import { IconAdd } from "../icons"
+import { courseLevel, courseStatus } from "@/constants"
+import { UploadButton } from "@/utils/uploadthing"
+import Image from "next/image"
 const formSchema = z.object({
     title: z.string().min(10, "Tên khóa học phải có ít nhất 10 ký tự"),
     slug: z.string().optional(),
@@ -83,7 +93,10 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                         requirements: courseInfo.requirements,
                         benefits: courseInfo.benefits,
                         qa: courseInfo.qa
-                    }
+                    },
+                    status: values.status,
+                    level: values.level,
+                    image: values.image
                 }
             });
             if (values.slug) {
@@ -98,6 +111,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
             setIsSubmitting(false);
         }
     }
+    const imageWatch = form.watch("image");
     return (
         <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} autoComplete="off">
@@ -178,7 +192,26 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                             <FormItem>
                                 <FormLabel>Ảnh đại diện</FormLabel>
                                 <FormControl>
-                                    <div className="h-[200px] bg-white border rounded-md border-gray-200"></div>
+                                    <>
+                                        <div className="h-[200px] bg-white border rounded-md border-gray-200 flex items-center justify-center relative">
+                                            {!imageWatch ? (
+                                                <UploadButton
+                                                    endpoint="imageUploader"
+                                                    onClientUploadComplete={(res) => {
+                                                        // Do something with the response
+                                                        form.setValue("image", res[0].url)
+                                                        console.log("Files: ", res)
+                                                    }}
+                                                    onUploadError={(error: Error) => {
+                                                        // Do something with the error.
+                                                        console.log(`ERROR! ${error.message}`);
+                                                    }}
+                                                />
+                                            ) : (
+                                                <Image alt="" src={imageWatch} fill className="w-full h-full object-cover"/>
+                                            )}
+                                        </div>
+                                    </>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -204,7 +237,16 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                             <FormItem>
                                 <FormLabel>Trạng thái</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://youtube.com/axfgh" {...field} />
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Trạng thái" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {courseStatus.map((status) => (
+                                                <SelectItem value={status.value}>{status.title}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -217,7 +259,16 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                             <FormItem>
                                 <FormLabel>Trình độ</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="https://youtube.com/axfgh" {...field} />
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <SelectTrigger className="w-full">
+                                            <SelectValue placeholder="Trình độ" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {courseLevel.map((level) => (
+                                                <SelectItem value={level.value}>{level.title}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
@@ -239,7 +290,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                                 <FormControl>
                                     <>
                                         {courseInfo.requirements.map((r, index) => (
-                                            <Input key={index} placeholder={`Yêu cầu số ${index + 1}`}  value={r} onChange={(e) => {
+                                            <Input key={index} placeholder={`Yêu cầu số ${index + 1}`} value={r} onChange={(e) => {
                                                 setCourseInfo((draft) => {
                                                     draft.requirements[index] = e.target.value;
                                                 })
@@ -255,7 +306,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                         control={form.control}
                         name="info.benefits"
                         render={({ field }) => (
-                           <FormItem>
+                            <FormItem>
                                 <FormLabel className="flex items-center justify-between gap-5">
                                     <span>Lợi ích</span>
                                     <button type="button" className="text-primary" onClick={() => {
@@ -283,7 +334,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                         control={form.control}
                         name="info.qa"
                         render={({ field }) => (
-                             <FormItem>
+                            <FormItem>
                                 <FormLabel className="flex items-center justify-between gap-5">
                                     <span>Q&A</span>
                                     <button type="button" className="text-primary" onClick={() => {
