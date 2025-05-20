@@ -77,7 +77,6 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
         },
     })
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(courseInfo);
         setIsSubmitting(true)
         try {
             const res = await updateCourse({
@@ -99,7 +98,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                     image: values.image
                 }
             });
-            if (values.slug) {
+            if (values.slug !== data.slug) {
                 router.replace(`/manage/course/update?slug=${values.slug}`);
             }
             if (res?.success) {
@@ -198,13 +197,9 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                                                 <UploadButton
                                                     endpoint="imageUploader"
                                                     onClientUploadComplete={(res) => {
-                                                        // Do something with the response
                                                         form.setValue("image", res[0].url)
-                                                        console.log("Files: ", res)
                                                     }}
                                                     onUploadError={(error: Error) => {
-                                                        // Do something with the error.
-                                                        console.log(`ERROR! ${error.message}`);
                                                     }}
                                                 />
                                             ) : (

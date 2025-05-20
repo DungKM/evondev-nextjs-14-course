@@ -34,37 +34,44 @@ export const menuItems: TMenuItem[] = [
         icon: <IconComment className="size-5"></IconComment>,
     }
 ];
-export const courseStatus: { title: string; value: ECourseStatus }[] = [
+export const courseStatus: { title: string; value: ECourseStatus, className?: string}[] = [
     {
         title: "Đã duyệt",
-        value: ECourseStatus.APPROVED
+        value: ECourseStatus.APPROVED,
+        className: "text-green-500 bg-green-500 bg-opacity-10"
     },
     {
         title: "Chờ duyệt",
-        value: ECourseStatus.PENDING
+        value: ECourseStatus.PENDING,
+        className: "text-yellow-500 bg-yellow-500 bg-opacity-10"
     },
     {
         title: "Từ chối",
-        value: ECourseStatus.REJECTED
+        value: ECourseStatus.REJECTED,
+        className: "text-red-500 bg-red-500 bg-opacity-10"
     }
 ]
 export const courseLevel: { title: string; value: ECourseLevel }[] = [
     {
         title: "Dễ",
-        value: ECourseLevel.BEGINNER
+        value: ECourseLevel.BEGINNER,
     },
     {
         title: "Trung bình",
-        value: ECourseLevel.INTERMEDIATE
+        value: ECourseLevel.INTERMEDIATE,
+
     },
     {
         title: "Khó",
-        value: ECourseLevel.ADVANCED
+        value: ECourseLevel.ADVANCED,
     }
 ]
 export const CourseLevelTitle: Record<ECourseLevel, string> = {
     [ECourseLevel.BEGINNER]: "Dễ",
     [ECourseLevel.INTERMEDIATE]: "Trung bình",
     [ECourseLevel.ADVANCED]: "Khó",
-
+}
+export const commonClassNames = {
+  status: "border border-current rounded-md font-medium px-3 py-1 bg-opacity-5 text-sm",
+  action: "size-8 rounded-md border  flex items-center justify-center p-2 bg-gray-100 text-gray-500 hover:bg-white dark:bg-transparent borderDarkMode dark:hover:bg-gray-700"
 }

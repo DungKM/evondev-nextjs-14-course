@@ -1,7 +1,8 @@
+import CourseManage from "@/components/course/CourseManage"
 
 const page = () => {
   return (
-    <div>Manage course</div>
+    <div><CourseManage></CourseManage></div>
   )
 }
 
