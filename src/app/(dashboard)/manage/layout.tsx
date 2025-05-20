@@ -9,7 +9,7 @@ const AdminLayout =  async  ({ children }: { children: React.ReactNode }) => {
   
   if (!userId) return redirectToSignIn()
     const user = await getUserInfo({ userId: userId! })
-  // if(user && user.role !== EUserRole.ADMIN) return <PageNotPound />
+  if(user && user.role !== EUserRole.ADMIN) return <PageNotPound />
   return (
     <div>{children}</div>
   )

@@ -13,7 +13,7 @@ const ActiveLink = ({ url = "/", children }: TActiveLinkProps) => {
       href={url}
       className={`p-3 rounded-md flex items-center gap-3 dark:text-grayDark transition-all ${
         isActive
-          ? "!text-white !bg-primary svg-animation"
+          ? "!text-primary !bg-opacity-20 !bg-primary svg-animation !font-semibold"
           : "hover:!text-primary hover:bg-primary hover:!bg-opacity-10"
       }`}
     >
