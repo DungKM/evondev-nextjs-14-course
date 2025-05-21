@@ -28,7 +28,7 @@ export default function RootLayout({
             {children}
             <ToastContainer
               autoClose={2000}
-              toastBodyClassName="text-sm font-medium"
+              toastClassName="text-sm font-medium"
               position="top-right"
             />
           </ThemeProvider>
