@@ -24,7 +24,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
       <div>
         <div className='relative aspect-[16/9] mb-5'>
           {!data.intro_url ? <>
-            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videoId}`} title="YouTube video player"  frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className='w-full h-full object-fill'></iframe>
+            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videoId}`} title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className='w-full h-full object-fill'></iframe>
           </> : (
             <Image src={data.image} alt='' fill
               className='w-ful h-full object-cover rounded-lg' />
@@ -43,7 +43,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           </div>
         </BoxSection>
         <BoxSection title='Yêu cầu'>
-          {data.info.requirements.map((r, index) => (
+          {data.info.requirements.map((r: string, index: number) => (
             <div key={index} className='mb-3 flex items-center gap-2'>
               <span className='flex-shrink-0 size-5 bg-primary text-white p-1 rounded-lg flex items-center justify-center'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -57,7 +57,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           ))}
         </BoxSection>
         <BoxSection title='Lợi ích'>
-          {data.info.benefits.map((b, index) => (
+          {data.info.benefits.map((b: string, index: number) => (
             <div key={index} className='mb-3 flex items-center gap-2'>
               <span className='flex-shrink-0 size-5 bg-primary text-white p-1 rounded-lg flex items-center justify-center'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
@@ -71,7 +71,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           ))}
         </BoxSection>
         <BoxSection title='Q.A'>
-          {data.info.qa.map((qa, index) => (
+          {data.info.qa.map((qa: { question: string; answer: string }, index: number) => (
             <Accordion type="single" key={index} collapsible>
               <AccordionItem value={qa.question}>
                 <AccordionTrigger>{qa.question}</AccordionTrigger>
