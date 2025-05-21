@@ -24,7 +24,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
       <div>
         <div className='relative aspect-[16/9] mb-5'>
           {!data.intro_url ? <>
-            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videoId}`} title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className='w-full h-full object-fill'></iframe>
+            <iframe width="560" height="315" src={`https://www.youtube.com/embed/${videoId}`} title="YouTube video player"  frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" className='w-full h-full object-fill'></iframe>
           </> : (
             <Image src={data.image} alt='' fill
               className='w-ful h-full object-cover rounded-lg' />
