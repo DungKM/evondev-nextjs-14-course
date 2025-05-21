@@ -5,7 +5,7 @@ type TActiveLinkProps = {
     children?: React.ReactNode;
 }
 type TMenuItem = {
-    url: string;    
+    url: string;
     title: string;
     icon: React.ReactNode;
     onlyIcon?: boolean;
@@ -34,4 +34,20 @@ export {
     TCreateUserParams,
     TCreateCourseParams,
     TUpdateCourseParams
+}
+
+export type TCreateLectureParams = {
+    course: string;
+    title?: string;
+    order?: number;
+    path?: string;
+}
+export type TUpdateLectureParams = {
+    lectureId: string;
+    updateData: {
+        title?: string;
+        order?: number;
+        _destroy?: boolean;
+        path?: string;
+    }
 }
