@@ -106,7 +106,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
 
                         const courseStatusItems = courseStatus.find((item) => item.value === course.status);
                         return (
-                            <TableRow>
+                            <TableRow key={course.slug}>
                                 <TableCell>
                                     <div className='flex items-center gap-3'>
                                         <Image alt='' className='flex-shrink-0 size-20 rounded-lg object-cover' src={course.image} width={80} height={80} />
