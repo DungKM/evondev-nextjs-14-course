@@ -47,7 +47,7 @@ export function CourseAddNew({user}: {user: IUser}) {
       }
       const res = await createCourse(data);
       if (!res?.success) {
-        toast.error(res.message)
+        toast.error(res?.message || "Có lỗi xảy ra");
         return;
       }
       if (res?.success) {
