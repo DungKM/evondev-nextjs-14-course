@@ -1,6 +1,6 @@
 import PageNotPound from '@/app/not-found';
 import { IconPlay, IconStudy, IconUsers } from '@/components/icons';
-import { ECourseStatus } from '@/components/types/enums';
+import { ECourseLevel, ECourseStatus } from '@/components/types/enums';
 import { Button } from '@/components/ui/button'
 import { CourseLevelTitle } from '@/constants';
 import { getCourseBySlug } from '@/lib/actions/course.action';
@@ -38,7 +38,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           <div className='grid grid-cols-4 gap-5'>
             <BoxInfo title="Bài học">100</BoxInfo>
             <BoxInfo title="Lượt xem">{data.views.toLocaleString('vi-VN')}</BoxInfo>
-            <BoxInfo title="Trình độ">{CourseLevelTitle[data.level]}</BoxInfo>
+            <BoxInfo title="Trình độ"> {CourseLevelTitle[data.level as ECourseLevel]}</BoxInfo>
             <BoxInfo title="Thời lượng">100</BoxInfo>
           </div>
         </BoxSection>
