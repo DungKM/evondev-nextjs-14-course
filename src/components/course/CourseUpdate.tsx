@@ -238,7 +238,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {courseStatus.map((status) => (
-                                                <SelectItem value={status.value}>{status.title}</SelectItem>
+                                                <SelectItem key={status.value} value={status.value}>{status.title}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
@@ -260,7 +260,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                                         </SelectTrigger>
                                         <SelectContent>
                                             {courseLevel.map((level) => (
-                                                <SelectItem value={level.value}>{level.title}</SelectItem>
+                                                <SelectItem key={level.value} value={level.value}>{level.title}</SelectItem>
                                             ))}
                                         </SelectContent>
                                     </Select>
@@ -344,7 +344,7 @@ const CourseUpdate = ({ data }: { data: ICourse }) => {
                                 <FormControl>
                                     <>
                                         {courseInfo.qa.map((item, index) => (
-                                            <div className="grid grid-cols-2 gap-5">
+                                            <div className="grid grid-cols-2 gap-5" key={index}>
                                                 <Input key={index} placeholder={`Câu hỏi số ${index + 1}`} value={item.question} onChange={(e) => {
                                                     setCourseInfo((draft) => {
                                                         draft.qa[index].question = e.target.value;
