@@ -6,11 +6,18 @@ import { CourseLevelTitle } from '@/constants';
 import { getCourseBySlug } from '@/lib/actions/course.action';
 import Image from 'next/image'
 import React from 'react'
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion"
+
 
 const page = async ({ params }: { params: { slug: string } }) => {
   const data = await getCourseBySlug({ slug: params.slug });
   if (!data) return null;
-  if(data.status !== ECourseStatus.APPROVED) return <PageNotPound />
+  if (data.status !== ECourseStatus.APPROVED) return <PageNotPound />
   const videoId = data.intro_url?.split("v=")[1];
   return (
     <div className='grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen'>
@@ -30,7 +37,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
         <BoxSection title='Thông tin'>
           <div className='grid grid-cols-4 gap-5'>
             <BoxInfo title="Bài học">100</BoxInfo>
-            <BoxInfo title="Lượt xem">{data.views}</BoxInfo>
+            <BoxInfo title="Lượt xem">{data.views.toLocaleString('vi-VN')}</BoxInfo>
             <BoxInfo title="Trình độ">{CourseLevelTitle[data.level]}</BoxInfo>
             <BoxInfo title="Thời lượng">100</BoxInfo>
           </div>
@@ -51,7 +58,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
         </BoxSection>
         <BoxSection title='Lợi ích'>
           {data.info.benefits.map((b, index) => (
-             <div key={index} className='mb-3 flex items-center gap-2'>
+            <div key={index} className='mb-3 flex items-center gap-2'>
               <span className='flex-shrink-0 size-5 bg-primary text-white p-1 rounded-lg flex items-center justify-center'>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
                   <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
@@ -65,10 +72,14 @@ const page = async ({ params }: { params: { slug: string } }) => {
         </BoxSection>
         <BoxSection title='Q.A'>
           {data.info.qa.map((qa, index) => (
-            <div key={index}>
-              <div>{qa.question}</div>
-              <div>{qa.answer}</div>
-            </div>
+            <Accordion type="single" key={index} collapsible>
+              <AccordionItem value={qa.question}>
+                <AccordionTrigger>{qa.question}</AccordionTrigger>
+                <AccordionContent>
+                  {qa.answer}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           ))}
         </BoxSection>
       </div>
