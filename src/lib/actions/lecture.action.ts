@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import Course from "@/app/database/course.model";
 import { connectToDatabase } from "../mongoose";
@@ -25,9 +25,12 @@ export async function createLecture(params: TCreateLectureParams) {
 export async function updateLecture(params: TUpdateLectureParams) {
     try {
         connectToDatabase();
-        await Lecture.findByIdAndUpdate(params.lectureId, params.updateData, {
+        const res = await Lecture.findByIdAndUpdate(params.lectureId, params.updateData, {
             new: true,
         });
+        console.log(res);
+        revalidatePath(params.updateData.path || '/');
+        if (!res) return;
         return {
             success: true,
         }

@@ -12,7 +12,6 @@ const page = async ({ searchParams }: { searchParams: { slug: string } }) => {
       </div>
     )
   }
-  console.log(findCourse);
   return (
     <>
       <Heading className='mb-10'>Nội dung: <strong className='text-primary'>{findCourse.title}</strong></Heading>

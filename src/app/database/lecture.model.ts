@@ -1,7 +1,6 @@
-import { Document, model, models, Schema } from "mongoose"
+import { Document, model, models, Schema } from "mongoose";
 
-
-export interface ILeture extends Document {
+export interface ILecture extends Document {
     _id: string;
     title: string;
     course: Schema.Types.ObjectId;
@@ -10,7 +9,8 @@ export interface ILeture extends Document {
     order: number;
     _destroy: boolean;
 }
-const lectureSchema = new Schema<ILeture>({
+
+const lectureSchema = new Schema<ILecture>({
     title: { type: String, required: true },
     lessons: [{ type: Schema.Types.ObjectId, ref: "Lesson" }],
     course: { type: Schema.Types.ObjectId, ref: "Course" },
@@ -18,6 +18,6 @@ const lectureSchema = new Schema<ILeture>({
     order: { type: Number, default: 0 },
     _destroy: { type: Boolean, default: false }
 });
-const Lecture = models.Lecture || model<ILeture>("Lecture", lectureSchema);
-export default Lecture;
 
+const Lecture = models.Lecture || model<ILecture>("Lecture", lectureSchema);
+export default Lecture;

@@ -12,6 +12,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { ILecture } from '@/app/database/lecture.model';
 
 
 const page = async ({ params }: { params: { slug: string } }) => {
@@ -19,6 +20,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
   if (!data) return null;
   if (data.status !== ECourseStatus.APPROVED) return <PageNotPound />
   const videoId = data.intro_url?.split("v=")[1];
+  const lectures = data.lectures || [];
   return (
     <div className='grid lg:grid-cols-[2fr,1fr] gap-10 min-h-screen'>
       <div>
@@ -40,6 +42,24 @@ const page = async ({ params }: { params: { slug: string } }) => {
             <BoxInfo title="Lượt xem">{data.views.toLocaleString('vi-VN')}</BoxInfo>
             <BoxInfo title="Trình độ"> {CourseLevelTitle[data.level as ECourseLevel]}</BoxInfo>
             <BoxInfo title="Thời lượng">100</BoxInfo>
+          </div>
+        </BoxSection>
+        <BoxSection title='Nội dung khóa học'>
+          <div className='flex flex-col gap-3'>
+            {lectures.map((lecture: ILecture) =>
+              <Accordion type="single" collapsible className="w-full" key={lecture._id}>
+                <AccordionItem value={lecture._id}>
+                  <AccordionTrigger>
+                    <div className='flex items-center gap-3 justify-between w-full pr-5'>
+                    <div>{lecture.title}</div>
+                    </div>
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    Yes. It adheres to the WAI-ARIA design pattern.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
+            )}
           </div>
         </BoxSection>
         <BoxSection title='Yêu cầu'>
