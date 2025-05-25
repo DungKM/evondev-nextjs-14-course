@@ -3,7 +3,7 @@ import { IconPlay, IconStudy, IconUsers } from '@/components/icons';
 import { ECourseLevel, ECourseStatus } from '@/components/types/enums';
 import { Button } from '@/components/ui/button'
 import { CourseLevelTitle } from '@/constants';
-import { getCourseBySlug } from '@/lib/actions/course.action';
+import { getCourseBySlug } from '@/lib/actions/course.actions';
 import Image from 'next/image'
 import React from 'react'
 import {

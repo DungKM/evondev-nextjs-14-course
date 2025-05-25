@@ -17,7 +17,7 @@ import { IconDelete, IconEdit, IconEye, IconStudy } from '../icons'
 import Link from 'next/link'
 import { ICourse } from '@/app/database/course.model';
 import Swal from 'sweetalert2'
-import { updateCourse } from '@/lib/actions/course.action';
+import { updateCourse } from '@/lib/actions/course.actions';
 import { ECourseStatus } from '../types/enums';
 import { toast } from 'react-toastify';
 import { Input } from '../ui/input';

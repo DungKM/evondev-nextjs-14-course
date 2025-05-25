@@ -4,6 +4,9 @@ import { connectToDatabase } from "../mongoose";
 import Course, { ICourse } from "@/app/database/course.model";
 import { revalidatePath } from "next/cache";
 import Lecture from "@/app/database/lecture.model";
+import { pathToFileURL } from "url";
+import Lesson from "@/app/database/lesson.model";
+import { match } from "assert";
 // import "@/app/database/lecture.model";
 export async function getAllCourse(): Promise<ICourse[] | undefined> {
     try {
@@ -42,6 +45,13 @@ export async function getCourseBySlug({ slug }: { slug: string }): Promise<TCour
             select: "_id title",
             match: {
                 _destroy: false,
+            },
+            populate: {
+              path: "lessons",
+              model: Lesson,
+              match: {
+                _destroy: false,
+              }
             }
         });
         

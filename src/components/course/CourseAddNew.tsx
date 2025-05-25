@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 import { useState } from "react"
-import { createCourse } from "@/lib/actions/course.action"
+import { createCourse } from "@/lib/actions/course.actions"
 import slugify from "slugify"
 import { toast } from "react-toastify"
 import { useRouter } from "next/navigation"
