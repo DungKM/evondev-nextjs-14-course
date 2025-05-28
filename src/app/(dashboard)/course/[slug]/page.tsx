@@ -12,7 +12,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { ILecture } from '@/app/database/lecture.model';
+import { TUpdateCourseLecture } from '@/components/types';
+import LessonContent from '@/components/lesson/LessonContent';
 
 
 const page = async ({ params }: { params: { slug: string } }) => {
@@ -45,22 +46,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           </div>
         </BoxSection>
         <BoxSection title='Nội dung khóa học'>
-          <div className='flex flex-col gap-3'>
-            {lectures.map((lecture: ILecture) =>
-              <Accordion type="single" collapsible className="w-full" key={lecture._id}>
-                <AccordionItem value={lecture._id}>
-                  <AccordionTrigger>
-                    <div className='flex items-center gap-3 justify-between w-full pr-5'>
-                    <div>{lecture.title}</div>
-                    </div>
-                  </AccordionTrigger>
-                  <AccordionContent>
-                    Yes. It adheres to the WAI-ARIA design pattern.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            )}
-          </div>
+         <LessonContent lectures={lectures} course="" slug=''></LessonContent>
         </BoxSection>
         <BoxSection title='Yêu cầu'>
           {data.info.requirements.map((r: string, index: number) => (

@@ -36,6 +36,7 @@
   .bgDarkMode {
     @apply border-gray-200 dark:border-opacity-10;
   }
+
   .flexCenter {
     @apply flex items-center justify-center;
   }
@@ -69,11 +70,44 @@
 
 .table-responsive {
   @media screen and (max-width: 1023.98px) {
+
     th,
     td {
       &:not(:first-child) {
         padding-left: 50px;
       }
     }
+  }
+}
+
+.entry-content {
+  font-size: 14px;
+  list-style: 2;
+
+  p,
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  ul,
+  ol,
+  figure {
+    @apply mb-5;
+  }
+
+  ol {
+    list-style: decimal;
+  }
+
+  ul {
+    list-style: disc;
+  }
+  ol, ul {
+    @apply pl-10;
+  }
+  a {
+    @apply underline text-primary;
   }
 }

@@ -5,7 +5,7 @@ import { connectToDatabase } from "../mongoose";
 import { TCreateLessonParams, TUpdateLessonParams } from "@/components/types";
 import Course from "@/app/database/course.model";
 import Lecture from "@/app/database/lecture.model";
-import Lesson from "@/app/database/lesson.model";
+import Lesson, { ILesson } from "@/app/database/lesson.model";
 
 export async function createLesson(params: TCreateLessonParams) {
     try {
@@ -35,6 +35,28 @@ export async function updateLesson(params: TUpdateLessonParams) {
         return {
             success: true,
         }
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function getLessonBySlug({slug, course}: { slug: string, course: string }): Promise<ILesson | undefined> {
+    try {
+        connectToDatabase();
+        const findLesson = await Lesson.findOne({ slug, course });
+        if (!findLesson) return;
+        revalidatePath(slug || "/");
+        return findLesson;
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function findAllLessons ({ course }: { course: string }): Promise<ILesson[] | undefined> {
+    try {
+        connectToDatabase();
+        const findLessons = await Lesson.find({ course });
+        if (!findLessons) return;
+        revalidatePath(course || "/");
+        return findLessons;
     } catch (error) {
         console.log(error);
     }
