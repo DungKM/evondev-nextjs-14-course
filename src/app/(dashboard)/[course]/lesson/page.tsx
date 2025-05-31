@@ -6,13 +6,19 @@ import LessonNavigation from './LessonNavigation';
 import Heading from '@/components/common/Heading';
 import LessonContent from '@/components/lesson/LessonContent';
 import { getHistory } from '@/lib/actions/history.action';
-const page = async ({ params, searchParams }: { param: { course: string }; searchParams: { slug: string } }) => {
-    console.log(params, searchParams);
+import { auth } from '@clerk/nextjs/server';
+import { getUserInfo } from '@/lib/actions/user.actions';
+const page = async ({ params, searchParams }: { params: { course: string }; searchParams: { slug: string } }) => {
+    const {userId} = await auth();
+    if (!userId) return <PageNotPound />
+    const findUser = await getUserInfo({ userId });
+    if (!findUser) return <PageNotPound />
     const course = params.course;
     const slug = searchParams.slug;
     const findCourse = await getCourseBySlug({ slug: course });
     if (!findCourse) return null;
     const courseId = findCourse._id.toString();
+    if(!findUser.courses?.includes(courseId as any)) return <PageNotPound />
     const lessonDetails = await getLessonBySlug({
         slug,
         course: courseId || ""
@@ -25,6 +31,7 @@ const page = async ({ params, searchParams }: { param: { course: string }; searc
     const videoId = lessonDetails.video_url?.split("v=")[1];
     const lectures = findCourse.lectures || [];
     const histories = await getHistory({ course: courseId || "" });
+    const completePercentage = ((histories?.length || 0) / (lessonList?.length || 1)) * 100;
     return (
         <div className='grid xl:grid-cols-[minmax(0,2fr),minmax(0,1fr)] gap-10 min-h-screen'>
             <div>
@@ -46,7 +53,7 @@ const page = async ({ params, searchParams }: { param: { course: string }; searc
             </div>
             <div className='sticky top-5 right-0 h-[calc(100svh-100px)] overflow-y-auto'>
                 <div className='h-3 w-full rounded-full border borderDarkMode bgDarkMode mb-2'>
-                    <div className='w-20 h-full rounded-full bg-primary'></div>
+                    <div className='h-full rounded-full bg-primary w-0 transition-all duration-300' style={{width: `${completePercentage}%`}}></div>
                 </div>
                 <LessonContent lectures={lectures} course={course} slug={slug} histories={histories ? JSON.parse(JSON.stringify(histories)) : []}></LessonContent>
             </div>

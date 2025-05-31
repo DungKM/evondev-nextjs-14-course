@@ -91,4 +91,5 @@ export type TCreateHistoryParams = {
     course: string;
     lesson: string;
     checked?: boolean | string;
+    path: string
 }

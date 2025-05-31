@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/accordion"
 import LessonItem from './LessonItem'
 import { IHistory } from '@/app/database/history.model'
-const LessonContent = ({ lectures, course, slug,  histories=[] }: { lectures: TUpdateCourseLecture[]; course: string; slug: string,  histories: IHistory[] }) => {
+const LessonContent = ({ lectures, course, slug,  histories=[] }: { lectures: TUpdateCourseLecture[]; course: string; slug: string,  histories?: IHistory[] }) => {
     return (
         <div className='flex flex-col gap-3'>
             {lectures.map((lecture: TUpdateCourseLecture) =>
