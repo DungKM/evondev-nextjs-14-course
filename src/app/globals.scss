@@ -40,6 +40,13 @@
   .flexCenter {
     @apply flex items-center justify-center;
   }
+
+  .focus-primary:focus {
+    @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
+  }
+  .skeleton{
+    @apply bg-gray-200 dark:bg-grayDarker animate-pulse;
+  }
 }
 
 @media screen and (max-width: 1023.98px) {
@@ -104,10 +111,46 @@
   ul {
     list-style: disc;
   }
-  ol, ul {
+
+  ol,
+  ul {
     @apply pl-10;
   }
+
   a {
     @apply underline text-primary;
+  }
+}
+
+.gradient-process {
+  background: #FC5C7D;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #6A82FB, #FC5C7D);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #6A82FB, #FC5C7D);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+
+.button-primary {
+  position: relative;
+  overflow: hidden;
+  z-index: 2;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: auto;
+    right: 0;
+    width: 0;
+    height: 100%;
+    background-color: rgba(white, 0.1);
+    transition: all 0.3s linear;
+    z-index: -1;
+  }
+
+  &:hover::before {
+    left: 0;
+    width: 100%;
   }
 }

@@ -34,7 +34,7 @@ export const menuItems: TMenuItem[] = [
         icon: <IconComment className="size-5"></IconComment>,
     }
 ];
-export const courseStatus: { title: string; value: ECourseStatus, className?: string}[] = [
+export const courseStatus: { title: string; value: ECourseStatus, className?: string }[] = [
     {
         title: "Đã duyệt",
         value: ECourseStatus.APPROVED,
@@ -72,44 +72,47 @@ export const CourseLevelTitle: Record<ECourseLevel, string> = {
     [ECourseLevel.ADVANCED]: "Khó",
 }
 export const commonClassNames = {
-  status: "border border-current rounded-md font-medium px-3 py-1 bg-opacity-5 text-xs whitespace-nowrap",
-  action: "size-8 rounded-md border  flex items-center justify-center p-2 bg-gray-100 text-gray-500 hover:bg-white dark:bg-transparent borderDarkMode dark:hover:bg-gray-700",
-  pagination: "size-10 rounded-md borderDarkMode bgDarkMode border flex items-center justify-center hover:border-primary transition-all hover:text-primary"
+    btnPrimary: "flex items-center justify-center w-full mt-10 rounded-lg text-white font-semibold bg-primary h-12 button-primary",
+    status: "border border-current rounded-md font-medium px-3 py-1 bg-opacity-5 text-xs whitespace-nowrap",
+    action: "size-8 rounded-md border  flex items-center justify-center p-2 bg-gray-100 text-gray-500 hover:bg-white dark:bg-transparent borderDarkMode dark:hover:bg-gray-700",
+    pagination: "size-10 rounded-md borderDarkMode bgDarkMode border flex items-center justify-center hover:border-primary transition-all hover:text-primary"
 }
 export const editorOptions = (field: any, theme: any) => ({
-  initialValue: "",
-  onBlur: field.onBlur,
-  onEditorChange: (content: any) => field.onChange(content),
-  init: {
-    codesample_global_prismjs: true,
-    skin: theme === "dark" ? "oxide-dark" : "oxide",
-    height: 300,
-    menubar: false,
-    plugins: [
-      "advlist",
-      "autolink",
-      "lists",
-      "link",
-      "image",
-      "charmap",
-      "preview",
-      "anchor",
-      "searchreplace",
-      "visualblocks",
-      "codesample",
-      "fullscreen",
-      "insertdatetime",
-      "media",
-      "table",
-      "heading",
-    ],
-    toolbar:
-      "undo redo | " +
-      "codesample | bold italic forecolor | alignleft aligncenter |" +
-      "alignright alignjustify | bullist numlist |" +
-      "image |" +
-      "h1 h2 h3 h4 h5 h6 | preview | fullscreen |" +
-      "link",
-    content_style: `@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');body { font-family: Manrope,Helvetica,Arial,sans-serif; font-size:14px; line-height: 2; padding-bottom: 32px; } img { max-width: 100%; height: auto; display: block; margin: 0 auto; };`,
-  },
+    initialValue: "",
+    onBlur: field.onBlur,
+    onEditorChange: (content: any) => field.onChange(content),
+    init: {
+        codesample_global_prismjs: true,
+        skin: theme === "dark" ? "oxide-dark" : "oxide",
+        height: 300,
+        menubar: false,
+        plugins: [
+            "advlist",
+            "autolink",
+            "lists",
+            "link",
+            "image",
+            "charmap",
+            "preview",
+            "anchor",
+            "searchreplace",
+            "visualblocks",
+            "codesample",
+            "fullscreen",
+            "insertdatetime",
+            "media",
+            "table",
+            "heading",
+        ],
+        toolbar:
+            "undo redo | " +
+            "codesample | bold italic forecolor | alignleft aligncenter |" +
+            "alignright alignjustify | bullist numlist |" +
+            "image |" +
+            "h1 h2 h3 h4 h5 h6 | preview | fullscreen |" +
+            "link",
+        content_style: `@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');body { font-family: Manrope,Helvetica,Arial,sans-serif; font-size:14px; line-height: 2; padding-bottom: 32px; } img { max-width: 100%; height: auto; display: block; margin: 0 auto; };`,
+
+    },
 });
+export const lastLessonKey = "lastLesson";

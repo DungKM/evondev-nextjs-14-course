@@ -19,7 +19,7 @@ const LessonItem = ({ lesson, url, isActive = false, isChecked = false }: { less
          }
     };
     return (
-        <div className={cn("flex items-center gap-2 bgDarkMode border borderDarkMode rounded-lg p-4 text-sm font-bold", isActive ? 'text-primary font-semibold' : '')}>
+        <div className={cn("flex items-center gap-2 bgDarkMode border borderDarkMode rounded-lg p-4 text-sm font-medium", isActive ? 'text-primary font-bold' : '')}>
             {url && <Checkbox defaultChecked={isChecked} className='flex-shrink-0 size-4' 
             onCheckedChange={(checked) => handlleCompleteLesson(checked)}
             />}
@@ -33,7 +33,7 @@ const LessonItem = ({ lesson, url, isActive = false, isChecked = false }: { less
                     <h4 className='line-clamp-1'>{lesson.title}</h4>
                 </>
             )}
-            <span className='ml-auto  text-sm font-semibold'>{Math.floor(lesson.duration)} phút</span>
+            <span className={cn("ml-auto text-sm font-medium", isActive ? 'text-primary font-bold' : '')}>{Math.floor(lesson.duration)} phút</span>
         </div>
     )
 }

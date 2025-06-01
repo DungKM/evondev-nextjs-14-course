@@ -8,6 +8,7 @@ import LessonContent from '@/components/lesson/LessonContent';
 import { getHistory } from '@/lib/actions/history.action';
 import { auth } from '@clerk/nextjs/server';
 import { getUserInfo } from '@/lib/actions/user.actions';
+import LessonSaveUrl from './LessonSaveUrl';
 const page = async ({ params, searchParams }: { params: { course: string }; searchParams: { slug: string } }) => {
     const {userId} = await auth();
     if (!userId) return <PageNotPound />
@@ -33,7 +34,8 @@ const page = async ({ params, searchParams }: { params: { course: string }; sear
     const histories = await getHistory({ course: courseId || "" });
     const completePercentage = ((histories?.length || 0) / (lessonList?.length || 1)) * 100;
     return (
-        <div className='grid xl:grid-cols-[minmax(0,2fr),minmax(0,1fr)] gap-10 min-h-screen'>
+        <div className='grid xl:grid-cols-[minmax(0,2fr),minmax(0,1fr)] gap-10 min-h-screen items-start'>
+            <LessonSaveUrl course={course} url={`/${course}/lesson?slug=${slug}`}></LessonSaveUrl>
             <div>
                 <div className="relative mb-5 aspect-video">
                     <iframe className='w-full h-full object-fill' src={`https://www.youtube.com/embed/${videoId}`} title=""></iframe>
@@ -53,7 +55,7 @@ const page = async ({ params, searchParams }: { params: { course: string }; sear
             </div>
             <div className='sticky top-5 right-0 h-[calc(100svh-100px)] overflow-y-auto'>
                 <div className='h-3 w-full rounded-full border borderDarkMode bgDarkMode mb-2'>
-                    <div className='h-full rounded-full bg-primary w-0 transition-all duration-300' style={{width: `${completePercentage}%`}}></div>
+                    <div className='h-full rounded-full gradient-process w-0 transition-all duration-300' style={{width: `${completePercentage}%`}}></div>
                 </div>
                 <LessonContent lectures={lectures} course={course} slug={slug} histories={histories ? JSON.parse(JSON.stringify(histories)) : []}></LessonContent>
             </div>
