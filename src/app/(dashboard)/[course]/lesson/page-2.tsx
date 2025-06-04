@@ -10,7 +10,7 @@ import { auth } from '@clerk/nextjs/server';
 import { getUserInfo } from '@/lib/actions/user.actions';
 import LessonSaveUrl from './LessonSaveUrl';
 const page = async ({ params, searchParams }: { params: { course: string }; searchParams: { slug: string } }) => {
-    const {userId} = await auth();
+    const { userId } = await auth();
     if (!userId) return <PageNotPound />
     const findUser = await getUserInfo({ userId });
     if (!findUser) return <PageNotPound />
@@ -19,13 +19,12 @@ const page = async ({ params, searchParams }: { params: { course: string }; sear
     const findCourse = await getCourseBySlug({ slug: course });
     if (!findCourse) return null;
     const courseId = findCourse._id.toString();
-    if(!findUser.courses?.includes(courseId as any)) return <PageNotPound />
-    const lessonDetails = await getLessonBySlug({
-        slug,
-        course: courseId || ""
-    });
+    if (!findUser.courses?.includes(courseId as any)) return <PageNotPound />
     const lessonList = await findAllLessons({ course: courseId || "" });
-    const currentLessonIndex = lessonList?.findIndex((lesson) => lesson.slug === lessonDetails?.slug) || 0;
+    const lessonDetails = lessonList?.find((el) => el.slug === slug);
+    if(!lessonDetails) return null;
+    const currentLessonIndex = lessonList?.findIndex((lesson) => lesson.slug === slug) || 0;
+
     const nextLesson = lessonList?.[currentLessonIndex + 1];
     const prevLesson = lessonList?.[currentLessonIndex - 1];
     if (!findCourse || !lessonDetails) return <PageNotPound />
@@ -55,7 +54,7 @@ const page = async ({ params, searchParams }: { params: { course: string }; sear
             </div>
             <div className='sticky top-5 right-0 h-[calc(100svh-100px)] overflow-y-auto'>
                 <div className='h-3 w-full rounded-full border borderDarkMode bgDarkMode mb-2'>
-                    <div className='h-full rounded-full gradient-process w-0 transition-all duration-300' style={{width: `${completePercentage}%`}}></div>
+                    <div className='h-full rounded-full gradient-process w-0 transition-all duration-300' style={{ width: `${completePercentage}%` }}></div>
                 </div>
                 <LessonContent lectures={lectures} course={course} slug={slug} histories={histories ? JSON.parse(JSON.stringify(histories)) : []}></LessonContent>
             </div>

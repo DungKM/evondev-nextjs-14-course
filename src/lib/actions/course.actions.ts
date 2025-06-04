@@ -14,7 +14,7 @@ export async function getAllCourse(): Promise<ICourse[] | undefined> {
         const courses = await Course.find();
         return courses;
     } catch (error) {
-        
+
     }
 }
 export async function createCourse(params: TCreateCourseParams) {
@@ -39,22 +39,24 @@ export async function createCourse(params: TCreateCourseParams) {
 export async function getCourseBySlug({ slug }: { slug: string }): Promise<TCourseUpdateParams | null | undefined> {
     try {
         connectToDatabase();
-        const findCourse = await Course.findOne({ slug }).populate({
-            path: "lectures",
-            model: Lecture,
-            select: "_id title",
-            match: {
-                _destroy: false,
-            },
-            populate: {
-              path: "lessons",
-              model: Lesson,
-              match: {
-                _destroy: false,
-              }
-            }
-        });
-        
+        const findCourse = await Course.findOne({ slug })
+            .select('_id slug lectures')
+            .populate({
+                path: "lectures",
+                model: Lecture,
+                select: "_id title",
+                match: {
+                    _destroy: false,
+                },
+                populate: {
+                    path: "lessons",
+                    model: Lesson,
+                    match: {
+                        _destroy: false,
+                    }
+                }
+            });
+
         return findCourse;
     } catch (error) {
         console.log(error);
@@ -64,7 +66,7 @@ export async function updateCourse(params: TUpdateCourseParams) {
     try {
         connectToDatabase();
         const findCourse = await Course.findOne({ slug: params.slug });
-        if(!findCourse) return;
+        if (!findCourse) return;
         await Course.findOneAndUpdate({ slug: params.slug }, params.updateData, {
             new: true,
         });

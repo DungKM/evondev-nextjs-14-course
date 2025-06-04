@@ -42,7 +42,7 @@ export async function updateLesson(params: TUpdateLessonParams) {
 export async function getLessonBySlug({slug, course}: { slug: string, course: string }): Promise<ILesson | undefined> {
     try {
         connectToDatabase();
-        const findLesson = await Lesson.findOne({ slug, course });
+        const findLesson = await Lesson.findOne({ slug, course }).select("title video_url content");
         if (!findLesson) return;
         revalidatePath(slug || "/");
         return findLesson;
@@ -53,10 +53,19 @@ export async function getLessonBySlug({slug, course}: { slug: string, course: st
 export async function findAllLessons ({ course }: { course: string }): Promise<ILesson[] | undefined> {
     try {
         connectToDatabase();
-        const findLessons = await Lesson.find({ course });
+        const findLessons = await Lesson.find({ course }).select("title video_url content slug");
         if (!findLessons) return;
         revalidatePath(course || "/");
         return findLessons;
+    } catch (error) {
+        console.log(error);
+    }
+}
+export async function countLessonsByCourseId ({ courseId }: { courseId: string }): Promise<number | undefined> {
+    try {
+        connectToDatabase();
+        const count = await Lesson.countDocuments({course: courseId})
+        return count || 0;
     } catch (error) {
         console.log(error);
     }
