@@ -5,6 +5,8 @@ import { findAllLessons } from '@/lib/actions/lesson.actions';
 import PageNotPound from '@/app/not-found';
 import LessonNavigation from '../LessonNavigation';
 import Heading from '@/components/common/Heading';
+import MuxPlayer from '@mux/mux-player-react';
+import VideoPlayer from './VideoPlayer';
 
 const page = async ({ params, searchParams }: { params: { course: string }; searchParams: { slug: string } }) => {
     const course = params.course;
@@ -14,7 +16,7 @@ const page = async ({ params, searchParams }: { params: { course: string }; sear
     const courseId = findCourse._id.toString();
     const lessonList = await findAllLessons({ course: courseId || "" });
     const lessonDetails = lessonList?.find((el) => el.slug === slug);
-    if(!lessonDetails) return null;
+    if (!lessonDetails) return null;
     const currentLessonIndex = lessonList?.findIndex((lesson) => lesson.slug === slug) || 0;
 
     const nextLesson = lessonList?.[currentLessonIndex + 1];
@@ -24,22 +26,12 @@ const page = async ({ params, searchParams }: { params: { course: string }; sear
     return (
         <div className='mb-5'>
             <LessonSaveUrl course={course} url={`/${course}/lesson?slug=${slug}`}></LessonSaveUrl>
-                <div className="relative mb-5 aspect-video">
-                    <iframe className='w-full h-full object-fill' src={`https://www.youtube.com/embed/${videoId}`} title=""></iframe>
-                </div>
-                <div className="flex justify-between item-center mb-6">
-                    <LessonNavigation
-                        prevLesson={!prevLesson ? "" : `/${course}/lesson?slug=${prevLesson?.slug}`}
-                        nextLesson={!nextLesson ? "" : `/${course}/lesson?slug=${nextLesson?.slug}`}
-                    >
-                    </LessonNavigation>
-                    <div></div>
-                </div>
-                <Heading className='mb-10'>{lessonDetails.title}</Heading>
-                <div className='p-5 rounded-lg bgDarkMode border borderDarkMode entry-content'>
-                    <div dangerouslySetInnerHTML={{ __html: lessonDetails.content || "" }}></div>
-                </div>
+            <VideoPlayer nextLesson={!nextLesson ? "" : `/${course}/lesson?slug=${nextLesson?.slug}`} prevLesson={!prevLesson ? "" : `/${course}/lesson?slug=${prevLesson?.slug}`} />
+            <Heading className='mb-10'>{lessonDetails.title}</Heading>
+            <div className='p-5 rounded-lg bgDarkMode border borderDarkMode entry-content'>
+                <div dangerouslySetInnerHTML={{ __html: lessonDetails.content || "" }}></div>
             </div>
+        </div>
     )
 }
 
