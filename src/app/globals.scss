@@ -44,7 +44,8 @@
   .focus-primary:focus {
     @apply focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2;
   }
-  .skeleton{
+
+  .skeleton {
     @apply bg-gray-200 dark:bg-grayDarker animate-pulse;
   }
 }
@@ -154,13 +155,33 @@
     width: 100%;
   }
 }
+
+.swal2-container {
+  .swal2-title {
+    @apply font-bold text-xl;
+  }
+
+  .swal2-actions {
+    .swal2-confirm {
+      @apply bg-primary;
+    }
+
+    .swal2-confirm,
+    .swal2-cancel {
+      @apply w-[150px]
+    }
+  }
+}
+
 .animate-bar {
   animation: animate-width 5s linear 1;
 }
+
 @keyframes animate-width {
   from {
     width: 100%;
   }
+
   to {
     width: 0;
   }

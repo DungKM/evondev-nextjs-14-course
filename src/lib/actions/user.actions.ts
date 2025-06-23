@@ -4,7 +4,8 @@ import User, { IUser } from "@/app/database/user.model";
 import { connectToDatabase } from "../mongoose";
 import { TCreateUserParams } from "@/components/types";
 import { auth } from "@clerk/nextjs/server";
-import { ICourse } from "@/app/database/course.model";
+import Course, { ICourse } from "@/app/database/course.model";
+import { ECourseStatus } from "@/components/types/enums";
 
 export async function createUser(params: TCreateUserParams): Promise<TCreateUserParams | undefined> {
     try {
@@ -31,7 +32,15 @@ export async function getUserCourses(): Promise<ICourse[] | undefined | null> {
     try {
         connectToDatabase();
         const { userId } = await auth();
-        const findUser = await User.findOne({ clerkId: userId }).populate('courses');
+        const findUser = await User.findOne({ clerkId: userId }).populate(
+            {
+                path: "courses",
+                model: Course,
+                match:{
+                    status: ECourseStatus.APPROVED
+                }
+            }
+        );
         if (!findUser) return null;
         return findUser.courses || [];
     } catch (error) {

@@ -19,7 +19,7 @@ type TCreateUserParams = {
     name?: string;
     avatar?: string;
 }
-
+// Course
 type TCreateCourseParams = {
     title: string;
     slug: string;
@@ -63,6 +63,12 @@ interface ICourseUpdateLecture extends ILecture {
 }
 export interface TCourseUpdateParams extends Omit<ICourse, "lectures"> {
     lectures: TUpdateCourseLecture[];
+}
+export type TGetAllCourseParams = {
+    page?: number,
+    limit?: number,
+    search?: string,
+    status?: string
 }
 // Lesson
 export type TCreateLessonParams = {

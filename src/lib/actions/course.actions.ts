@@ -1,17 +1,52 @@
 "use server";
-import { TCourseUpdateParams, TCreateCourseParams, TUpdateCourseParams } from "@/components/types";
+import { TCourseUpdateParams, TCreateCourseParams, TGetAllCourseParams, TUpdateCourseParams } from "@/components/types";
 import { connectToDatabase } from "../mongoose";
 import Course, { ICourse } from "@/app/database/course.model";
 import { revalidatePath } from "next/cache";
 import Lecture from "@/app/database/lecture.model";
-import { pathToFileURL } from "url";
 import Lesson from "@/app/database/lesson.model";
-import { match } from "assert";
+import { FilterQuery } from "mongoose";
+import { ECourseStatus } from "@/components/types/enums";
+import { stat } from "fs";
 // import "@/app/database/lecture.model";
-export async function getAllCourse(): Promise<ICourse[] | undefined> {
+export async function getAllCourse(params: TGetAllCourseParams): Promise<ICourse[] | undefined> {
     try {
         connectToDatabase();
-        const courses = await Course.find();
+        const {
+            page = 1,
+            limit = 10,
+            search,
+            status
+        } = params;
+        const skip = (page - 1) * limit;
+        const query: FilterQuery<typeof Course> = {};
+        if(search){
+            query.$or = [{title: {$regex: search, $options: "i"}}];
+        }
+        if(status) {
+            query.status = status;
+        }
+        const courses = await Course.find(query).skip(skip).limit(limit).sort({ created_at: -1 });
+        return courses;
+    } catch (error) {
+
+    }
+}
+export async function getAllCoursePublic(params: TGetAllCourseParams): Promise<ICourse[] | undefined> {
+    try {
+        connectToDatabase();
+        const {
+            page = 1,
+            limit = 10,
+            search,
+        } = params;
+        const skip = (page - 1) * limit;
+        const query: FilterQuery<typeof Course> = {};
+        if(search){
+            query.$or = [{title: {$regex: search, $options: "i"}}];
+        }
+        query.status = ECourseStatus.APPROVED;
+        const courses = await Course.find(query).skip(skip).limit(limit).sort({ created_at: -1 });
         return courses;
     } catch (error) {
 
@@ -40,7 +75,6 @@ export async function getCourseBySlug({ slug }: { slug: string }): Promise<TCour
     try {
         connectToDatabase();
         const findCourse = await Course.findOne({ slug })
-            .select('_id slug lectures')
             .populate({
                 path: "lectures",
                 model: Lecture,
