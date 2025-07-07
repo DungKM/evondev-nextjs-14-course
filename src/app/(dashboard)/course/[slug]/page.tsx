@@ -12,14 +12,22 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
-import { TUpdateCourseLecture } from '@/components/types';
 import LessonContent from '@/components/lesson/LessonContent';
+import { auth } from '@clerk/nextjs/server';
+import { getUserInfo } from '@/lib/actions/user.actions';
+import ButtonEnroll from './ButtonEnroll';
 
 
 const page = async ({ params }: { params: { slug: string } }) => {
   const data = await getCourseBySlug({ slug: params.slug });
   if (!data) return null;
   if (data.status !== ECourseStatus.APPROVED) return <PageNotPound />
+  const { userId } = await auth();
+  const userDoc = await getUserInfo({ userId: userId || '' });
+
+  if (!userDoc) return null;
+
+  const findUser = JSON.parse(JSON.stringify(userDoc));
   const videoId = data.intro_url?.split("v=")[1];
   const lectures = data.lectures || [];
   return (
@@ -46,7 +54,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           </div>
         </BoxSection>
         <BoxSection title='Nội dung khóa học'>
-         <LessonContent lectures={lectures} course="" slug=''></LessonContent>
+          <LessonContent lectures={lectures} course="" slug=''></LessonContent>
         </BoxSection>
         <BoxSection title='Yêu cầu'>
           {data.info.requirements.map((r: string, index: number) => (
@@ -92,8 +100,8 @@ const page = async ({ params }: { params: { slug: string } }) => {
       <div>
         <div className='bg-white rounded-lg p-5'>
           <div className='flex items-center gap-2 mb-3'>
-            <strong className='text-primary text-xl font-bold'>{data.price}</strong>
-            <span className='text-slate-400 line-through text-xl'>{data.sale_price}</span>
+            <strong className='text-primary text-xl font-bold'>{data.price.toLocaleString('vi-VN')}</strong>
+            <span className='text-slate-400 line-through text-xl'>{data.sale_price.toLocaleString('vi-VN')}</span>
             <span className='ml-auto inline-block px-3 py-1 rounded-lg bg-primary text-primary bg-opacity-10 font-semibold text-sm'>{Math.floor((data.price / data.sale_price) * 100)}%</span>
           </div>
           <h3 className='font-bold mb-3 text-sm'>Khóa học gồm có:</h3>
@@ -115,7 +123,11 @@ const page = async ({ params }: { params: { slug: string } }) => {
               <span>Có nhóm hỗ trợ</span>
             </div>
           </div>
-          <Button variant='primary' className='w-full'>Đăng ký ngay</Button>
+          <ButtonEnroll
+            user={findUser}
+            courseId={JSON.parse(JSON.stringify(data._id))}
+            amount={data.price}
+          ></ButtonEnroll>
         </div>
       </div>
     </div>

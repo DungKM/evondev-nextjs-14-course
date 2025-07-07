@@ -1,8 +1,9 @@
 import React from 'react'
+import OrderManage from './OrderManage'
 
 const page = () => {
   return (
-    <div>Orders</div>
+   <OrderManage></OrderManage>
   )
 }
 
