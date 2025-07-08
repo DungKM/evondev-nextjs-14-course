@@ -5,8 +5,13 @@ import { TCreateOrderParams } from "@/components/types";
 import Course from "@/app/database/course.model";
 import User from "@/app/database/user.model";
 import { FilterQuery } from "mongoose";
-
-export async function fetchOrders(params: any) {
+type FetchOrdersParams = {
+  page?: number;
+  limit?: number;
+  search?: string;
+  status?: string;
+};
+export async function fetchOrders(params: FetchOrdersParams) {
     try {
        connectToDatabase();
            const {

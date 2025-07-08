@@ -89,7 +89,7 @@ export const editorOptions = (
 ) => ({
     initialValue: "",
     onBlur: field.onBlur,
-    onEditorChange: (content: any) => field.onChange(content),
+    onEditorChange: (content: string) => field.onChange(content),
     init: {
         codesample_global_prismjs: true,
         skin: theme === "dark" ? "oxide-dark" : "oxide",
