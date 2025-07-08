@@ -30,20 +30,23 @@ import {
     TableRow,
 } from "@/components/ui/table";
 import { debounce } from 'lodash';
+import { StatusBadge } from '../common';
+import useQueryString from '@/hooks/useQueryString';
 
 const CourseManage = ({ courses }: { courses: ICourse[] }) => {
     const router = useRouter();
     const pathname = usePathname();
-    const searchParams = useSearchParams();
-    const createQueryString = useCallback((name: string, value: string) => {
-        const params = new URLSearchParams(searchParams.toString());
-        if (value) {
-            params.set(name, value);
-        } else {
-            params.delete(name);
-        }
-        return params.toString();
-    }, [searchParams]);
+    // const searchParams = useSearchParams();
+    // const createQueryString = useCallback((name: string, value: string) => {
+    //     const params = new URLSearchParams(searchParams.toString());
+    //     if (value) {
+    //         params.set(name, value);
+    //     } else {
+    //         params.delete(name);
+    //     }
+    //     return params.toString();
+    // }, [searchParams]);
+    const { createQueryString } = useQueryString();
     const handleDeleteCourse = (slug: string) => {
         Swal.fire({
             title: "Are you sure?",
@@ -164,7 +167,7 @@ const CourseManage = ({ courses }: { courses: ICourse[] }) => {
                                     <span className='text-sm font-bold lg:text-base'> {course.price.toLocaleString('vi-VN')} đ</span>
                                 </TableCell>
                                 <TableCell>
-                                    <button className={cn(commonClassNames.status, courseStatusItems?.className)} onClick={() => handleChangesStatus(course.slug, course.status)}>{courseStatusItems?.title}</button>
+                                    <StatusBadge item={courseStatusItems} onClick={() => handleChangesStatus(course.slug, course.status)}></StatusBadge>
                                 </TableCell>
                                 <TableCell>
                                     <div className='flex gap-3'>

@@ -25,7 +25,7 @@ enum ELessonType {
 enum EOrderStatus {
     PENDING = "PENDING",
     COMPLETED = "COMPLETED",
-    CANCELLED = "CANCELLED",
+    CANCELED = "CANCELED",
 }
 
 export {EUserStatus, EUserRole, ECourseStatus, ECourseLevel, ELessonType, EOrderStatus};
