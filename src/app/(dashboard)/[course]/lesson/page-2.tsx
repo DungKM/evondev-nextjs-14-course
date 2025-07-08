@@ -19,10 +19,13 @@ const page = async ({ params, searchParams }: { params: { course: string }; sear
     const findCourse = await getCourseBySlug({ slug: course });
     if (!findCourse) return null;
     const courseId = findCourse._id.toString();
-    if (!findUser.courses?.includes(courseId as any)) return <PageNotPound />
+    const userCourseIds = findUser.courses?.map(id => id.toString()) ?? [];
+    if (!userCourseIds.includes(courseId)) {
+        return <PageNotPound />;
+    }
     const lessonList = await findAllLessons({ course: courseId || "" });
     const lessonDetails = lessonList?.find((el) => el.slug === slug);
-    if(!lessonDetails) return null;
+    if (!lessonDetails) return null;
     const currentLessonIndex = lessonList?.findIndex((lesson) => lesson.slug === slug) || 0;
 
     const nextLesson = lessonList?.[currentLessonIndex + 1];

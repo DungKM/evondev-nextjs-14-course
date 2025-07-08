@@ -5,11 +5,14 @@ import { ICourse } from '@/app/database/course.model'
 import { CourseGrid } from '@/components/common'
 import CourseItem from '@/components/course/CourseItem'
 import { courseStatus, lastLessonKey } from '@/constants'
-
+type LastLessonItem = {
+  course: string;
+  lesson: string;
+};
 const StudyCourse = ({ courses }: {
     courses: ICourse[] | undefined | null
 }) => {
-    const [lastLesson, setLastLesson] = useState<any[]>([]);
+    const [lastLesson, setLastLesson] = useState<LastLessonItem[]>([]);
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -22,7 +25,7 @@ const StudyCourse = ({ courses }: {
     return (
         <CourseGrid>
             {courses.map((course) => {
-                const url = lastLesson.find((item: any) => item.course === course.slug)?.lesson || '';
+                const url = lastLesson.find((item) => item.course === course.slug)?.lesson || '';
                 return (
                     <CourseItem
                         key={course.slug}

@@ -1,7 +1,13 @@
 import { IconComment, IconExplore, IconOrder, IconPlay, IconStudy, IconUsers } from "@/components/icons";
 import { TMenuItem } from "@/components/types";
 import { ECourseLevel, ECourseStatus, EOrderStatus } from "@/components/types/enums";
+import { ControllerRenderProps } from "react-hook-form";
 
+type FormValues = {
+  content?: string;
+};
+
+type ThemeType = "light" | "dark" | string;
 export const menuItems: TMenuItem[] = [
     {
         url: "/",
@@ -77,7 +83,10 @@ export const commonClassNames = {
     action: "size-8 rounded-md border  flex items-center justify-center p-2 bg-gray-100 text-gray-500 hover:bg-white dark:bg-transparent borderDarkMode dark:hover:bg-gray-700",
     pagination: "size-10 rounded-md borderDarkMode bgDarkMode border flex items-center justify-center hover:border-primary transition-all hover:text-primary"
 }
-export const editorOptions = (field: any, theme: any) => ({
+export const editorOptions = ( 
+  field: ControllerRenderProps<FormValues, "content">,
+  theme: ThemeType
+) => ({
     initialValue: "",
     onBlur: field.onBlur,
     onEditorChange: (content: any) => field.onChange(content),
