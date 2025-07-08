@@ -1,5 +1,6 @@
 'use client';
 import { Editor } from '@tinymce/tinymce-react';
+import { Editor as TinyMCEEditor } from 'tinymce';
 import { Button } from "@/components/ui/button"
 import {
     Form,
@@ -13,7 +14,7 @@ import {
 
 import { Input } from "@/components/ui/input"
 import { ILesson } from '@/app/database/lesson.model'
-import React, { use, useEffect } from 'react'
+import React, { use, useEffect, useRef } from 'react'
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -23,7 +24,7 @@ import { toast } from "react-toastify";
 import { editorOptions } from '@/constants';
 import { useTheme } from 'next-themes';
 const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
-    const editorRef = React.useRef<any>(null);
+    const editorRef = useRef<TinyMCEEditor | null>(null);
     const formSchema = z.object({
         slug: z.string().optional(),
         duration: z.number().optional(),
@@ -55,15 +56,11 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
     }
     const theme = useTheme();
 
-    useEffect(() => {
-        if (editorRef.current) {
-            setTimeout(() => {
-                if (editorRef.current) {
-                    editorRef.current?.setContent(lesson.content || "");
-                }
-            }, 1000);
-        }
-    }, [editorRef.current]);
+  useEffect(() => {
+  if (editorRef.current) {
+    editorRef.current.setContent(lesson.content || "");
+  }
+}, [lesson.content]);
     return (
         <div>
             <Form {...form}>
@@ -118,7 +115,7 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                                     <FormControl>
                                         <Editor
                                             apiKey={process.env.NEXT_PUBLIC_TINY_MCE_API_KEY}
-                                            onInit={(_evt: any, editor: any) => {
+                                            onInit={(_evt: unknown, editor: TinyMCEEditor) => {
                                                 (editorRef.current = editor).setContent(
                                                     lesson.content || ""
                                                 );
