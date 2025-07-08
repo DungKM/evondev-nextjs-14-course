@@ -121,7 +121,7 @@ const LessonItemUpdate = ({ lesson }: { lesson: ILesson }) => {
                                                 );
                                             }}
                                             value={field.value}
-                                            {...editorOptions(field, theme)}
+                                            {...editorOptions(field, theme.theme!)}
                                         />
                                     </FormControl>
                                     <FormMessage />
