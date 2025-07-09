@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button'
 import { createOrder } from '@/lib/actions/order.actions'
 import { createOrderCode } from '@/utils'
 import { create } from 'lodash'
+import { useRouter } from 'next/navigation'
 import React from 'react'
 import { toast } from 'react-toastify'
 
@@ -12,6 +13,7 @@ const ButtonEnroll = ({ user, courseId, amount }: {
     courseId: string,
     amount: number
 }) => {
+    const router = useRouter();
     const handleEnrollCourse = async () => {
         if (!user?.name) {
             toast.error('Bạn cần đăng nhập để mua khóa học này')
@@ -25,7 +27,9 @@ const ButtonEnroll = ({ user, courseId, amount }: {
             total: amount,
             amount: amount,
         });
-        console.log(newOrder);
+        if(newOrder.code){
+            router.push(`/order/${newOrder.code}`);
+        }
     }
     return (
         <Button variant='primary' className='w-full' onClick={handleEnrollCourse} >Mua khóa học</Button>

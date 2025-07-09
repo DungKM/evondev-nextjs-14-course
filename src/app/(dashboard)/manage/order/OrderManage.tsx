@@ -25,8 +25,12 @@ import { commonClassNames, orderStatus } from '@/constants';
 import { StatusBadge } from '@/components/common';
 import Swal from 'sweetalert2'
 import useQueryString from '@/hooks/useQueryString';
-import { debounce } from 'lodash';
+import { debounce, update } from 'lodash';
+import { updateOrder } from '@/lib/actions/order.actions';
+import { toast } from 'react-toastify';
+import { cn } from '@/lib/utils';
 interface IOrderManageProps {
+    _id: string;
     code: string;
     course: { title: string } | null;
     user: { name: string } | null;
@@ -36,34 +40,36 @@ interface IOrderManageProps {
     status: EOrderStatus
 };
 const OrderManage = ({ orders = [] }: { orders: IOrderManageProps[] }) => {
-    const handleCancelOrder = () => {
-        Swal.fire({
-            title: "Bạn có muốn hủy đơn hàng không?",
-            icon: "warning",
-            showCancelButton: true,
-            confirmButtonText: "Đồng ý",
-            cancelButtonText: "Thoát"
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-
+    const handleUpdateOrder = async ({ orderId, status }: { orderId: string, status: EOrderStatus }) => {
+        if (status === EOrderStatus.CANCELED) {
+            Swal.fire({
+                title: "Bạn có muốn hủy đơn hàng không?",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Đồng ý",
+                cancelButtonText: "Thoát"
+            }).then(async (result) => {
+                if (result.isConfirmed) {
+                    await updateOrder({ orderId, status }); // Replace with actual order ID
+                }
+            });
+        }
+        if (status === EOrderStatus.COMPLETED) {
+            const res = await updateOrder({ orderId, status }); // Replace with actual order ID
+            if (res?.success) {
+                toast.success("Cập nhật đơn hàng thành công");
             }
-        });
+        }
     };
-    const {createQueryString, router, pathname} = useQueryString();
-    const handleCompleteOrder = () => {};
-     const handleSearchOrder = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
-            router.push(`${pathname}?${createQueryString('search', e.target.value)}`);
-        }, 500);
-        const handleSelectStatus = (status: EOrderStatus) => {
-            router.push(`${pathname}?${createQueryString('status', status)}`);
-        };
+    const { createQueryString, router, pathname } = useQueryString();
+    const handleSearchOrder = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+        router.push(`${pathname}?${createQueryString('search', e.target.value)}`);
+    }, 500);
+    const handleSelectStatus = (status: EOrderStatus) => {
+        router.push(`${pathname}?${createQueryString('status', status)}`);
+    };
     return (
         <>
-            <Link href="/manage/course/new" className='size-10 rounded-full bg-primary flexCenter text-white fixed right-5 bottom-5 animate-bounce'>
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-                </svg>
-            </Link>
             <div className='flex flex-col lg:flex-row lg:items-center gap-5 justify-between mb-10'>
                 <Heading>Quản lý đơn hàng</Heading>
                 <div className='flex gap-3'>
@@ -107,23 +113,25 @@ const OrderManage = ({ orders = [] }: { orders: IOrderManageProps[] }) => {
                                 <TableCell className='font-medium'><div className='flex flex-col gap-2'>
                                     <span>{order.amount.toLocaleString("us-US")}</span>
                                     <span>{order.discount > 0 && <span>{order.discount.toLocaleString("us-US")}</span>}</span>
-                                    <strong className='text-orange-500'>{order.total.toLocaleString("us-US")}</strong>
+                                    <strong className={cn(order.status === EOrderStatus.COMPLETED ? 'text-green-500' : 'text-orange-500')}>{order.total.toLocaleString("us-US")}</strong>
                                 </div></TableCell>
                                 <TableCell className='font-medium'></TableCell>
                                 <TableCell className='font-medium'>
                                     <StatusBadge item={orderStatusItem}></StatusBadge>
                                 </TableCell>
                                 <TableCell>
-                                    <div className='flex gap-3'>
-
-                                        <button type="button" className={commonClassNames.action} onClick={handleCompleteOrder}>
-                                            <IconCheck />
-                                        </button>
-
-                                        <button type='button' className={commonClassNames.action} onClick={handleCancelOrder}>
-                                            <IconCancel />
-                                        </button>
-                                    </div>
+                                    {order.status !== EOrderStatus.CANCELED && (
+                                        <div className='flex gap-3'>
+                                            {order.status === EOrderStatus.PENDING && (
+                                                <button type="button" className={commonClassNames.action} onClick={() => handleUpdateOrder({ orderId: order._id, status: EOrderStatus.COMPLETED })}>
+                                                    <IconCheck />
+                                                </button>
+                                            )}
+                                            <button type='button' className={commonClassNames.action} onClick={() => handleUpdateOrder({ orderId: order._id, status: EOrderStatus.CANCELED })}>
+                                                <IconCancel />
+                                            </button>
+                                        </div>
+                                    )}
                                 </TableCell>
                             </TableRow>
                         )
@@ -131,14 +139,6 @@ const OrderManage = ({ orders = [] }: { orders: IOrderManageProps[] }) => {
 
                 </TableBody>
             </Table>
-            <div className='flex justify-end gap-3 mt-5'>
-                <button>
-                    <IconLeftArrow />
-                </button>
-                <button>
-                    <IconRightArrow />
-                </button>
-            </div>
         </>
     )
 }
