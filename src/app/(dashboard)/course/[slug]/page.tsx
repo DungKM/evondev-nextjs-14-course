@@ -46,7 +46,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
           <div className='leading-normal'>{data.desc}</div>
         </BoxSection>
         <BoxSection title='Thông tin'>
-          <div className='grid grid-cols-4 gap-5'>
+          <div className='grid grid-cols-4 gap-5 text-gray-900 dark:text-gray-500'>
             <BoxInfo title="Bài học">100</BoxInfo>
             <BoxInfo title="Lượt xem">{data.views.toLocaleString('vi-VN')}</BoxInfo>
             <BoxInfo title="Trình độ"> {CourseLevelTitle[data.level as ECourseLevel]}</BoxInfo>
@@ -98,7 +98,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
         </BoxSection>
       </div>
       <div>
-        <div className='bg-white rounded-lg p-5'>
+        <div className='bg-white rounded-lg p-5 mb-10'>
           <div className='flex items-center gap-2 mb-3'>
             <strong className='text-primary text-xl font-bold'>{data.price.toLocaleString('vi-VN')}</strong>
             <span className='text-slate-400 line-through text-xl'>{data.sale_price.toLocaleString('vi-VN')}</span>
