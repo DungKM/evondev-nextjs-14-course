@@ -8,6 +8,7 @@ const config: Config = {
   	extend: {
   		colors: {
   			primary: '#C68EFD',
+			secondary: '#F2F3F7',
   			grayDarkest: '#131316',
   			grayDarker: '#212126',
   			grayDark: '#9394A1'

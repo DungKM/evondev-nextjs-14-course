@@ -13,28 +13,34 @@ const StudyCourse = ({ courses }: {
     courses: ICourse[] | undefined | null
 }) => {
     const [lastLesson, setLastLesson] = useState<LastLessonItem[]>([]);
-
     useEffect(() => {
-        if (typeof window !== 'undefined') {
-            const data = JSON.parse(localStorage.getItem(lastLessonKey) || '[]');
-            setLastLesson(data);
-        }
-    }, []);
+    if (typeof localStorage === 'undefined') return;
+    const lesson = localStorage
+      ? JSON.parse(localStorage?.getItem(lastLessonKey) || '[]') || []
+      : [];
+    setLastLesson(lesson);
+  }, []);
 
     if (!courses || courseStatus.length === 0) return null;
+    console.log(courses)
     return (
         <CourseGrid>
-            {courses.map((course) => {
-                const url = lastLesson.find((item) => item.course === course.slug)?.lesson || '';
-                return (
-                    <CourseItem
-                        key={course.slug}
-                        data={course}
-                        cta="Tiếp tục học"
-                        url={url}
-                    />
-                )
-            })}
+            {courses.map((item) => {
+        const firstLessonUrl = item.lectures[0].lessons[0].slug;
+        console.log(firstLessonUrl)
+        const lastURL =
+          lastLesson.find((element) => element.course === item.slug)?.lesson ||
+          `/${item.slug}/lesson?slug=${firstLessonUrl}`;
+
+        return (
+          <CourseItem
+            key={item.slug}
+            cta="Tiếp tục học"
+            data={item}
+            url={lastURL}
+          />
+        );
+      })}
         </CourseGrid>
     )
 }

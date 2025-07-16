@@ -1,6 +1,6 @@
-import { IconComment, IconExplore, IconOrder, IconPlay, IconStudy, IconUsers } from "@/components/icons";
+import { IconComment, IconExplore, IconMoney, IconOrder, IconPlay, IconStudy, IconUsers } from "@/components/icons";
 import { TMenuItem } from "@/components/types";
-import { ECourseLevel, ECourseStatus, EOrderStatus } from "@/components/types/enums";
+import { ECouponType, ECourseLevel, ECourseStatus, EOrderStatus } from "@/components/types/enums";
 import { ControllerRenderProps } from "react-hook-form";
 
 type FormValues = {
@@ -33,6 +33,11 @@ export const menuItems: TMenuItem[] = [
         url: "/manage/order",
         title: "Quản lý đơn hàng",
         icon: <IconOrder className="size-5"></IconOrder>,
+    },
+    {
+        url: "/manage/coupon",
+        title: "Quản lý mã giảm giá ",
+        icon: <IconMoney className="size-5"></IconMoney>,
     },
     {
         url: "/manage/comment",
@@ -145,4 +150,14 @@ export const orderStatus: {
     className: 'text-red-500 bg-red-500 bg-opacity-5',
   },
 ];
+export const couponTypes: { title: string; value: ECouponType }[] = [
+    {
+        title: "Phần trăm",
+        value: ECouponType.PERCENT,
+    },
+    {
+        title: "Giá trị",
+        value: ECouponType.AMOUNT,
+    }
+]
 export const lastLessonKey = "lastLesson";

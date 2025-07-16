@@ -1,7 +1,5 @@
 import PageNotPound from '@/app/not-found';
-import { IconPlay, IconStudy, IconUsers } from '@/components/icons';
 import { ECourseLevel, ECourseStatus } from '@/components/types/enums';
-import { Button } from '@/components/ui/button'
 import { CourseLevelTitle } from '@/constants';
 import { getCourseBySlug } from '@/lib/actions/course.actions';
 import Image from 'next/image'
@@ -15,7 +13,8 @@ import {
 import LessonContent from '@/components/lesson/LessonContent';
 import { auth } from '@clerk/nextjs/server';
 import { getUserInfo } from '@/lib/actions/user.actions';
-import ButtonEnroll from './ButtonEnroll';
+import CourseWidget from './CourseWidget';
+import AlreadyEnroll from './AlreadyEnroll';
 
 
 const page = async ({ params }: { params: { slug: string } }) => {
@@ -28,6 +27,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
   if (!userDoc) return null;
 
   const findUser = JSON.parse(JSON.stringify(userDoc));
+  const userCourses = findUser.courses.map((c: any) => c.toString());
   const videoId = data.intro_url?.split("v=")[1];
   const lectures = data.lectures || [];
   return (
@@ -98,7 +98,7 @@ const page = async ({ params }: { params: { slug: string } }) => {
         </BoxSection>
       </div>
       <div>
-        <div className='bg-white rounded-lg p-5 mb-10'>
+        {/* <div className='bgDarkMode border borderDarkMode rounded-lg p-5 mb-10'>
           <div className='flex items-center gap-2 mb-3'>
             <strong className='text-primary text-xl font-bold'>{data.price.toLocaleString('vi-VN')}</strong>
             <span className='text-slate-400 line-through text-xl'>{data.sale_price.toLocaleString('vi-VN')}</span>
@@ -128,7 +128,16 @@ const page = async ({ params }: { params: { slug: string } }) => {
             courseId={JSON.parse(JSON.stringify(data._id))}
             amount={data.price}
           ></ButtonEnroll>
-        </div>
+        </div> */}
+        {userCourses.includes(data._id.toString()) ? (
+          <>
+          <AlreadyEnroll></AlreadyEnroll>
+          </>
+        ) : (
+          <>
+            <CourseWidget findUser={findUser ? JSON.parse(JSON.stringify(findUser)) : null} data={data ? JSON.parse(JSON.stringify(data)) : null}></CourseWidget>
+          </>
+        )}
       </div>
     </div>
   )
